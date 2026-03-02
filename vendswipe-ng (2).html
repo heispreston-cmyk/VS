@@ -1,0 +1,2018 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="theme-color" content="#006400">
+<meta name="description" content="VendSwipe NG – Swipe right on the perfect event vendor in Nigeria">
+<title>VendSwipe NG 🎉</title>
+<link rel="manifest" href="#" />
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --green: #00A550;
+  --green-dark: #007A3D;
+  --green-light: #E8F7EE;
+  --gold: #FFD700;
+  --gold-deep: #D4A017;
+  --orange: #FF6B35;
+  --white: #FFFFFF;
+  --off-white: #F8F9FA;
+  --gray-100: #F1F3F5;
+  --gray-200: #E9ECEF;
+  --gray-400: #ADB5BD;
+  --gray-600: #6C757D;
+  --gray-800: #343A40;
+  --dark: #0D1117;
+  --dark-card: #161B22;
+  --dark-border: #21262D;
+  --text: #1A1A2E;
+  --text-muted: #6C757D;
+  --danger: #DC3545;
+  --blue: #0D6EFD;
+  --shadow-sm: 0 2px 8px rgba(0,0,0,0.08);
+  --shadow-md: 0 4px 20px rgba(0,0,0,0.12);
+  --shadow-lg: 0 8px 40px rgba(0,0,0,0.16);
+  --shadow-card: 0 20px 60px rgba(0,0,0,0.15);
+  --radius: 16px;
+  --radius-sm: 8px;
+  --radius-lg: 24px;
+  --radius-xl: 32px;
+  --font-display: 'Syne', sans-serif;
+  --font-body: 'DM Sans', sans-serif;
+}
+[data-theme="dark"] {
+  --white: #161B22;
+  --off-white: #0D1117;
+  --gray-100: #21262D;
+  --gray-200: #30363D;
+  --gray-400: #656D76;
+  --gray-600: #9198A1;
+  --gray-800: #C9D1D9;
+  --text: #F0F6FC;
+  --text-muted: #9198A1;
+  --shadow-sm: 0 2px 8px rgba(0,0,0,0.3);
+  --shadow-md: 0 4px 20px rgba(0,0,0,0.4);
+  --shadow-lg: 0 8px 40px rgba(0,0,0,0.5);
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { height: 100%; overflow: hidden; }
+body {
+  font-family: var(--font-body);
+  background: var(--off-white);
+  color: var(--text);
+  transition: background 0.3s, color 0.3s;
+  -webkit-font-smoothing: antialiased;
+  -webkit-tap-highlight-color: transparent;
+}
+#app { height: 100vh; display: flex; flex-direction: column; position: relative; overflow: hidden; max-width: 480px; margin: 0 auto; background: var(--white); box-shadow: var(--shadow-lg); }
+.screen { position: absolute; inset: 0; display: flex; flex-direction: column; background: var(--white); transition: transform 0.4s cubic-bezier(.4,0,.2,1), opacity 0.4s; will-change: transform; overflow: hidden; }
+.screen.hidden { transform: translateX(100%); opacity: 0; pointer-events: none; }
+.screen.slide-left { transform: translateX(-100%); opacity: 0; pointer-events: none; }
+
+/* ===== SPLASH ===== */
+#screen-splash {
+  background: linear-gradient(160deg, #003D1F 0%, #006430 40%, #00A550 75%, #FFD700 130%);
+  justify-content: center; align-items: center; gap: 0;
+}
+.splash-bg-pattern {
+  position: absolute; inset: 0; overflow: hidden; opacity: 0.07;
+  background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+}
+.splash-content { position: relative; text-align: center; padding: 40px; animation: splashIn 1s ease forwards; }
+@keyframes splashIn { from { opacity: 0; transform: scale(0.8) translateY(30px); } to { opacity: 1; transform: scale(1) translateY(0); } }
+.splash-logo { font-family: var(--font-display); font-size: 52px; font-weight: 800; color: #fff; letter-spacing: -2px; line-height: 1; }
+.splash-logo span { color: var(--gold); }
+.splash-ng { display: inline-block; background: var(--gold); color: #003D1F; padding: 2px 10px; border-radius: 6px; font-size: 28px; margin-left: 4px; }
+.splash-tagline { font-family: var(--font-body); color: rgba(255,255,255,0.85); font-size: 15px; margin-top: 12px; font-weight: 400; letter-spacing: 0.2px; }
+.splash-emojis { font-size: 36px; margin-bottom: 16px; animation: bounce 2s infinite; }
+@keyframes bounce { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-8px)} }
+.splash-loader { margin-top: 48px; width: 48px; height: 4px; background: rgba(255,255,255,0.2); border-radius: 2px; overflow: hidden; }
+.splash-loader-fill { height: 100%; background: var(--gold); border-radius: 2px; animation: loading 2s ease forwards; }
+@keyframes loading { from{width:0} to{width:100%} }
+
+/* ===== ONBOARDING ===== */
+.onboard-header { padding: 20px 24px 0; display: flex; align-items: center; gap: 12px; }
+.back-btn { width: 40px; height: 40px; border-radius: 50%; border: 1px solid var(--gray-200); background: transparent; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 18px; color: var(--text); transition: all 0.2s; }
+.back-btn:active { transform: scale(0.9); background: var(--gray-100); }
+.step-dots { display: flex; gap: 6px; margin: 0 auto; }
+.step-dot { width: 8px; height: 8px; border-radius: 4px; background: var(--gray-200); transition: all 0.3s; }
+.step-dot.active { width: 24px; background: var(--green); }
+.theme-toggle { width: 40px; height: 40px; border-radius: 50%; border: 1px solid var(--gray-200); background: transparent; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 16px; margin-left: auto; }
+
+.onboard-body { flex: 1; padding: 24px; overflow-y: auto; display: flex; flex-direction: column; }
+.onboard-title { font-family: var(--font-display); font-size: 28px; font-weight: 800; color: var(--text); line-height: 1.2; margin-bottom: 8px; }
+.onboard-title .accent { color: var(--green); }
+.onboard-sub { color: var(--text-muted); font-size: 14px; margin-bottom: 28px; line-height: 1.5; }
+
+/* Role selection */
+.role-cards { display: flex; flex-direction: column; gap: 16px; flex: 1; }
+.role-card { border: 2px solid var(--gray-200); border-radius: var(--radius-lg); padding: 24px; cursor: pointer; transition: all 0.3s; background: var(--white); position: relative; overflow: hidden; }
+.role-card::before { content: ''; position: absolute; inset: 0; background: linear-gradient(135deg, var(--green), var(--green-dark)); opacity: 0; transition: opacity 0.3s; }
+.role-card:hover, .role-card.selected { border-color: var(--green); transform: translateY(-2px); box-shadow: var(--shadow-md); }
+.role-card.selected::before { opacity: 1; }
+.role-card.selected .role-emoji, .role-card.selected .role-title, .role-card.selected .role-desc { color: white; position: relative; }
+.role-emoji { font-size: 40px; margin-bottom: 12px; display: block; position: relative; }
+.role-title { font-family: var(--font-display); font-size: 20px; font-weight: 700; color: var(--text); margin-bottom: 6px; position: relative; }
+.role-desc { font-size: 13px; color: var(--text-muted); line-height: 1.5; position: relative; }
+.role-check { position: absolute; top: 16px; right: 16px; width: 28px; height: 28px; border-radius: 50%; background: var(--green); display: none; align-items: center; justify-content: center; color: white; font-size: 14px; z-index: 1; }
+.role-card.selected .role-check { display: flex; background: rgba(255,255,255,0.3); }
+
+/* Phone input */
+.phone-input-wrap { display: flex; gap: 10px; margin-bottom: 16px; }
+.country-code { display: flex; align-items: center; gap: 6px; padding: 14px 16px; border: 1.5px solid var(--gray-200); border-radius: var(--radius-sm); background: var(--gray-100); font-weight: 600; font-size: 15px; white-space: nowrap; color: var(--text); }
+.country-flag { font-size: 20px; }
+.input-field { flex: 1; padding: 14px 16px; border: 1.5px solid var(--gray-200); border-radius: var(--radius-sm); font-family: var(--font-body); font-size: 15px; background: var(--white); color: var(--text); outline: none; transition: border-color 0.2s; -webkit-appearance: none; }
+.input-field:focus { border-color: var(--green); }
+.input-field::placeholder { color: var(--gray-400); }
+.input-label { font-size: 13px; font-weight: 600; color: var(--text); margin-bottom: 8px; display: block; }
+
+/* OTP inputs */
+.otp-inputs { display: flex; gap: 10px; justify-content: center; margin-bottom: 24px; }
+.otp-input { width: 52px; height: 60px; text-align: center; font-size: 24px; font-weight: 700; border: 2px solid var(--gray-200); border-radius: var(--radius-sm); background: var(--white); color: var(--text); outline: none; transition: all 0.2s; font-family: var(--font-display); }
+.otp-input:focus { border-color: var(--green); box-shadow: 0 0 0 3px rgba(0,165,80,0.15); }
+.otp-input.filled { border-color: var(--green); background: var(--green-light); }
+
+/* Buttons */
+.btn { display: flex; align-items: center; justify-content: center; gap: 8px; padding: 16px 24px; border-radius: var(--radius); font-family: var(--font-display); font-size: 16px; font-weight: 700; cursor: pointer; border: none; transition: all 0.2s; letter-spacing: 0.3px; -webkit-appearance: none; }
+.btn:active { transform: scale(0.97); }
+.btn-primary { background: var(--green); color: white; width: 100%; box-shadow: 0 4px 16px rgba(0,165,80,0.35); }
+.btn-primary:hover { background: var(--green-dark); }
+.btn-secondary { background: var(--gray-100); color: var(--text); width: 100%; }
+.btn-outline { background: transparent; color: var(--green); width: 100%; border: 2px solid var(--green); }
+.btn-danger { background: var(--danger); color: white; }
+.btn-gold { background: var(--gold); color: #003D1F; width: 100%; box-shadow: 0 4px 16px rgba(255,215,0,0.4); }
+.btn-sm { padding: 10px 18px; font-size: 14px; }
+.btn-xs { padding: 7px 14px; font-size: 12px; border-radius: 20px; }
+.btn:disabled { opacity: 0.5; pointer-events: none; }
+.btn-icon { background: none; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; padding: 8px; border-radius: 50%; color: var(--text); font-size: 20px; transition: all 0.2s; }
+.btn-icon:active { transform: scale(0.9); }
+
+/* ===== BOTTOM NAV ===== */
+.bottom-nav { display: flex; background: var(--white); border-top: 1px solid var(--gray-200); padding: 8px 0 max(8px, env(safe-area-inset-bottom)); }
+.nav-item { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 4px; padding: 6px 0; cursor: pointer; transition: all 0.2s; position: relative; }
+.nav-icon { font-size: 22px; line-height: 1; transition: transform 0.2s; }
+.nav-label { font-size: 10px; font-weight: 600; color: var(--gray-400); letter-spacing: 0.3px; }
+.nav-item.active .nav-label { color: var(--green); }
+.nav-item.active .nav-icon { transform: translateY(-2px); }
+.nav-badge { position: absolute; top: 4px; right: 22%; background: var(--danger); color: white; font-size: 9px; font-weight: 700; padding: 1px 5px; border-radius: 10px; min-width: 16px; text-align: center; }
+
+/* ===== TOP BAR ===== */
+.top-bar { padding: 16px 20px 12px; display: flex; align-items: center; gap: 12px; background: var(--white); border-bottom: 1px solid var(--gray-100); }
+.top-bar-title { font-family: var(--font-display); font-size: 22px; font-weight: 800; color: var(--text); flex: 1; }
+.avatar { width: 38px; height: 38px; border-radius: 50%; object-fit: cover; background: var(--green-light); display: flex; align-items: center; justify-content: center; font-size: 16px; color: var(--green); font-weight: 700; font-family: var(--font-display); cursor: pointer; border: 2px solid var(--green-light); overflow: hidden; flex-shrink: 0; }
+.avatar img { width: 100%; height: 100%; object-fit: cover; }
+
+/* ===== SWIPE SCREEN ===== */
+.swipe-screen { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
+.swipe-filters { padding: 12px 20px; display: flex; gap: 8px; overflow-x: auto; scrollbar-width: none; }
+.swipe-filters::-webkit-scrollbar { display: none; }
+.filter-chip { display: flex; align-items: center; gap: 6px; padding: 8px 14px; border-radius: 20px; border: 1.5px solid var(--gray-200); background: var(--white); font-size: 12px; font-weight: 600; color: var(--text-muted); cursor: pointer; white-space: nowrap; transition: all 0.2s; }
+.filter-chip.active { background: var(--green); border-color: var(--green); color: white; }
+.filter-chip .chip-emoji { font-size: 14px; }
+
+.card-stack { flex: 1; display: flex; align-items: center; justify-content: center; position: relative; padding: 0 20px 16px; overflow: hidden; }
+.swipe-card {
+  position: absolute; width: calc(100% - 40px); max-width: 380px;
+  border-radius: var(--radius-xl); overflow: hidden; background: var(--white);
+  box-shadow: var(--shadow-card); cursor: grab; user-select: none;
+  transition: transform 0.05s linear; will-change: transform;
+  touch-action: none;
+}
+.swipe-card:nth-child(2) { transform: scale(0.96) translateY(10px); z-index: 0; }
+.swipe-card:nth-child(3) { transform: scale(0.92) translateY(20px); z-index: -1; }
+.swipe-card.top { z-index: 10; }
+.swipe-card:active { cursor: grabbing; }
+.swipe-card.animate-left { animation: swipeLeft 0.4s ease forwards; }
+.swipe-card.animate-right { animation: swipeRight 0.4s ease forwards; }
+.swipe-card.animate-up { animation: swipeUp 0.4s ease forwards; }
+@keyframes swipeLeft { to { transform: translateX(-150%) rotate(-20deg); opacity: 0; } }
+@keyframes swipeRight { to { transform: translateX(150%) rotate(20deg); opacity: 0; } }
+@keyframes swipeUp { to { transform: translateY(-150%); opacity: 0; } }
+
+.card-photo { width: 100%; aspect-ratio: 3/4; object-fit: cover; background: linear-gradient(135deg, #1a472a, #2d6a4f); position: relative; display: flex; align-items: flex-end; }
+.card-photo-bg { width: 100%; aspect-ratio: 3/4; background: linear-gradient(160deg, #1a2a1a 0%, #2d5a2d 50%, #0a3d0a 100%); position: relative; overflow: hidden; display: flex; align-items: center; justify-content: center; font-size: 80px; }
+.card-photo-gradient { position: absolute; bottom: 0; left: 0; right: 0; height: 65%; background: linear-gradient(to top, rgba(0,0,0,0.85) 0%, transparent 100%); }
+.like-indicator { position: absolute; top: 24px; left: 24px; background: var(--green); color: white; padding: 8px 16px; border-radius: 6px; font-family: var(--font-display); font-size: 20px; font-weight: 800; border: 3px solid white; opacity: 0; transform: rotate(-20deg); transition: opacity 0.2s; letter-spacing: 1px; pointer-events: none; }
+.nope-indicator { position: absolute; top: 24px; right: 24px; background: var(--danger); color: white; padding: 8px 16px; border-radius: 6px; font-family: var(--font-display); font-size: 20px; font-weight: 800; border: 3px solid white; opacity: 0; transform: rotate(20deg); transition: opacity 0.2s; letter-spacing: 1px; pointer-events: none; }
+.super-indicator { position: absolute; bottom: 50%; left: 50%; transform: translate(-50%, 50%); background: var(--blue); color: white; padding: 8px 16px; border-radius: 6px; font-family: var(--font-display); font-size: 20px; font-weight: 800; border: 3px solid white; opacity: 0; transition: opacity 0.2s; letter-spacing: 1px; pointer-events: none; }
+
+.card-info { padding: 20px; background: var(--white); }
+.card-name-row { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 6px; }
+.card-name { font-family: var(--font-display); font-size: 22px; font-weight: 800; color: var(--text); line-height: 1.1; }
+.card-verified { color: var(--blue); font-size: 16px; }
+.card-rating { display: flex; align-items: center; gap: 4px; font-size: 13px; font-weight: 600; color: var(--gold-deep); }
+.card-meta { color: var(--text-muted); font-size: 13px; margin-bottom: 10px; }
+.card-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 12px; }
+.card-tag { background: var(--green-light); color: var(--green-dark); font-size: 11px; font-weight: 600; padding: 4px 10px; border-radius: 12px; }
+.card-price-row { display: flex; align-items: center; justify-content: space-between; }
+.card-price { font-family: var(--font-display); font-size: 16px; font-weight: 700; color: var(--green); }
+.card-distance { font-size: 12px; color: var(--text-muted); display: flex; align-items: center; gap: 3px; }
+
+.swipe-actions { display: flex; justify-content: center; align-items: center; gap: 16px; padding: 12px 20px 20px; }
+.swipe-btn { width: 58px; height: 58px; border-radius: 50%; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 24px; transition: all 0.2s; box-shadow: var(--shadow-md); }
+.swipe-btn:active { transform: scale(0.9); }
+.btn-pass { background: white; border: 2px solid var(--danger); color: var(--danger); width: 52px; height: 52px; }
+.btn-like { background: var(--green); color: white; width: 66px; height: 66px; font-size: 28px; box-shadow: 0 6px 20px rgba(0,165,80,0.4); }
+.btn-super { background: white; border: 2px solid var(--blue); color: var(--blue); width: 52px; height: 52px; }
+.btn-rewind { background: white; border: 2px solid var(--gold-deep); color: var(--gold-deep); width: 44px; height: 44px; font-size: 18px; }
+.btn-boost { background: white; border: 2px solid var(--orange); color: var(--orange); width: 44px; height: 44px; font-size: 18px; }
+
+/* ===== MATCHES & CHAT ===== */
+.screen-body { flex: 1; overflow-y: auto; -webkit-overflow-scrolling: touch; }
+.section-title { font-family: var(--font-display); font-size: 16px; font-weight: 700; color: var(--text); padding: 16px 20px 8px; }
+
+.matches-row { display: flex; gap: 12px; padding: 4px 20px 16px; overflow-x: auto; scrollbar-width: none; }
+.matches-row::-webkit-scrollbar { display: none; }
+.match-bubble { display: flex; flex-direction: column; align-items: center; gap: 6px; cursor: pointer; flex-shrink: 0; }
+.match-avatar { width: 62px; height: 62px; border-radius: 50%; border: 3px solid var(--green); background: var(--gray-100); display: flex; align-items: center; justify-content: center; font-size: 24px; position: relative; overflow: hidden; }
+.match-avatar .online-dot { position: absolute; bottom: 2px; right: 2px; width: 12px; height: 12px; border-radius: 50%; background: #22C55E; border: 2px solid white; }
+.match-name { font-size: 11px; font-weight: 600; color: var(--text); text-align: center; max-width: 62px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+.conv-list { display: flex; flex-direction: column; }
+.conv-item { display: flex; align-items: center; gap: 14px; padding: 14px 20px; cursor: pointer; transition: background 0.2s; border-bottom: 1px solid var(--gray-100); }
+.conv-item:active { background: var(--gray-100); }
+.conv-avatar { width: 52px; height: 52px; border-radius: 50%; background: var(--gray-100); display: flex; align-items: center; justify-content: center; font-size: 22px; flex-shrink: 0; position: relative; overflow: hidden; }
+.conv-info { flex: 1; min-width: 0; }
+.conv-name { font-weight: 700; font-size: 15px; color: var(--text); margin-bottom: 3px; }
+.conv-preview { font-size: 13px; color: var(--text-muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.conv-meta { display: flex; flex-direction: column; align-items: flex-end; gap: 4px; }
+.conv-time { font-size: 11px; color: var(--gray-400); }
+.conv-unread { background: var(--green); color: white; font-size: 10px; font-weight: 700; padding: 2px 7px; border-radius: 10px; min-width: 18px; text-align: center; }
+
+/* ===== CHAT ===== */
+.chat-header { padding: 12px 16px; display: flex; align-items: center; gap: 12px; border-bottom: 1px solid var(--gray-200); }
+.chat-header-info { flex: 1; }
+.chat-header-name { font-family: var(--font-display); font-size: 17px; font-weight: 700; color: var(--text); }
+.chat-header-status { font-size: 12px; color: var(--green); }
+.chat-messages { flex: 1; overflow-y: auto; padding: 16px; display: flex; flex-direction: column; gap: 12px; -webkit-overflow-scrolling: touch; }
+.msg { max-width: 80%; display: flex; flex-direction: column; gap: 4px; }
+.msg.sent { align-self: flex-end; align-items: flex-end; }
+.msg.recv { align-self: flex-start; align-items: flex-start; }
+.msg-bubble { padding: 10px 14px; border-radius: 18px; font-size: 14px; line-height: 1.5; }
+.msg.sent .msg-bubble { background: var(--green); color: white; border-bottom-right-radius: 4px; }
+.msg.recv .msg-bubble { background: var(--gray-100); color: var(--text); border-bottom-left-radius: 4px; }
+.msg-time { font-size: 10px; color: var(--gray-400); }
+.msg-proposal { border: 1.5px solid var(--green); border-radius: var(--radius); padding: 14px; background: var(--green-light); margin: 4px 0; }
+.msg-proposal-title { font-weight: 700; font-size: 14px; color: var(--green-dark); margin-bottom: 6px; }
+.msg-proposal-amount { font-family: var(--font-display); font-size: 22px; font-weight: 800; color: var(--green); margin-bottom: 10px; }
+.chat-input-wrap { display: flex; gap: 10px; padding: 12px 16px; border-top: 1px solid var(--gray-200); align-items: flex-end; background: var(--white); }
+.chat-input { flex: 1; padding: 12px 16px; border: 1.5px solid var(--gray-200); border-radius: 22px; font-family: var(--font-body); font-size: 14px; background: var(--gray-100); color: var(--text); outline: none; resize: none; max-height: 120px; -webkit-appearance: none; }
+.chat-input:focus { border-color: var(--green); background: var(--white); }
+.send-btn { width: 44px; height: 44px; border-radius: 50%; background: var(--green); border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; color: white; font-size: 18px; flex-shrink: 0; box-shadow: 0 2px 8px rgba(0,165,80,0.4); }
+
+/* ===== EVENTS ===== */
+.events-list { display: flex; flex-direction: column; gap: 16px; padding: 16px 20px; }
+.event-card { border-radius: var(--radius); border: 1.5px solid var(--gray-200); background: var(--white); overflow: hidden; cursor: pointer; transition: all 0.2s; box-shadow: var(--shadow-sm); }
+.event-card:active { transform: scale(0.99); }
+.event-card-header { background: linear-gradient(135deg, var(--green), var(--green-dark)); padding: 20px; position: relative; overflow: hidden; }
+.event-card-header::after { content: ''; position: absolute; right: -20px; top: -20px; width: 80px; height: 80px; border-radius: 50%; background: rgba(255,255,255,0.1); }
+.event-type-badge { display: inline-flex; align-items: center; gap: 6px; background: rgba(255,255,255,0.2); color: white; font-size: 12px; font-weight: 600; padding: 4px 10px; border-radius: 12px; margin-bottom: 8px; }
+.event-title { font-family: var(--font-display); font-size: 18px; font-weight: 700; color: white; }
+.event-card-body { padding: 16px; }
+.event-meta-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.event-meta-item { display: flex; align-items: center; gap: 6px; }
+.event-meta-icon { width: 28px; height: 28px; border-radius: 8px; background: var(--green-light); display: flex; align-items: center; justify-content: center; font-size: 14px; flex-shrink: 0; }
+.event-meta-text { font-size: 12px; color: var(--text-muted); }
+.event-meta-value { font-size: 13px; font-weight: 600; color: var(--text); }
+.event-actions { display: flex; gap: 10px; padding: 12px 16px; border-top: 1px solid var(--gray-100); }
+
+/* ===== CREATE EVENT FORM ===== */
+.form-section { padding: 20px; display: flex; flex-direction: column; gap: 20px; }
+.form-group { display: flex; flex-direction: column; gap: 8px; }
+.select-field { padding: 14px 16px; border: 1.5px solid var(--gray-200); border-radius: var(--radius-sm); font-family: var(--font-body); font-size: 15px; background: var(--white); color: var(--text); outline: none; -webkit-appearance: none; appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23666' stroke-width='1.5' fill='none'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 14px center; padding-right: 36px; }
+.select-field:focus { border-color: var(--green); }
+.textarea-field { padding: 14px 16px; border: 1.5px solid var(--gray-200); border-radius: var(--radius-sm); font-family: var(--font-body); font-size: 15px; background: var(--white); color: var(--text); outline: none; resize: none; min-height: 100px; -webkit-appearance: none; }
+.textarea-field:focus { border-color: var(--green); }
+.range-inputs { display: flex; gap: 10px; align-items: center; }
+.range-sep { color: var(--text-muted); font-size: 13px; }
+.chips-select { display: flex; flex-wrap: wrap; gap: 8px; }
+.sel-chip { padding: 8px 14px; border-radius: 20px; border: 1.5px solid var(--gray-200); font-size: 13px; font-weight: 500; cursor: pointer; transition: all 0.2s; background: var(--white); color: var(--text); }
+.sel-chip.selected { background: var(--green); border-color: var(--green); color: white; }
+
+/* ===== PROFILE ===== */
+.profile-hero { position: relative; }
+.profile-cover { height: 160px; background: linear-gradient(135deg, #003D1F, #00A550, #FFD700); }
+.profile-avatar-wrap { position: absolute; bottom: -36px; left: 20px; }
+.profile-avatar { width: 76px; height: 76px; border-radius: 50%; border: 4px solid var(--white); background: var(--gray-100); display: flex; align-items: center; justify-content: center; font-size: 32px; overflow: hidden; }
+.profile-body { padding: 48px 20px 20px; }
+.profile-name-row { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 6px; }
+.profile-name { font-family: var(--font-display); font-size: 24px; font-weight: 800; color: var(--text); }
+.profile-role-badge { display: inline-flex; align-items: center; gap: 6px; background: var(--green-light); color: var(--green-dark); padding: 6px 12px; border-radius: 20px; font-size: 12px; font-weight: 600; margin-bottom: 12px; }
+.profile-bio { font-size: 14px; color: var(--text-muted); line-height: 1.6; margin-bottom: 20px; }
+.stats-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 20px; }
+.stat-card { text-align: center; padding: 16px 8px; background: var(--gray-100); border-radius: var(--radius-sm); }
+.stat-value { font-family: var(--font-display); font-size: 22px; font-weight: 800; color: var(--green); }
+.stat-label { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
+.portfolio-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 4px; border-radius: var(--radius-sm); overflow: hidden; }
+.portfolio-item { aspect-ratio: 1; background: linear-gradient(135deg, #1a472a, #2d6a4f); display: flex; align-items: center; justify-content: center; font-size: 32px; cursor: pointer; }
+
+/* ===== MATCH CELEBRATION ===== */
+.match-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.85); z-index: 1000; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 24px; padding: 40px; animation: fadeIn 0.3s ease; }
+@keyframes fadeIn { from{opacity:0} to{opacity:1} }
+.match-title { font-family: var(--font-display); font-size: 38px; font-weight: 800; color: var(--gold); text-align: center; animation: matchPop 0.5s 0.2s both; }
+@keyframes matchPop { from{transform:scale(0) rotate(-10deg);opacity:0} to{transform:scale(1) rotate(0);opacity:1} }
+.match-sub { color: rgba(255,255,255,0.8); text-align: center; font-size: 16px; }
+.match-avatars { display: flex; align-items: center; gap: -10px; }
+.match-avatar { width: 90px; height: 90px; border-radius: 50%; border: 4px solid var(--gold); background: var(--gray-200); display: flex; align-items: center; justify-content: center; font-size: 40px; overflow: hidden; }
+.match-heart { color: var(--gold); font-size: 36px; margin: 0 -8px; z-index: 1; animation: heartbeat 1s infinite; }
+@keyframes heartbeat { 0%,100%{transform:scale(1)} 50%{transform:scale(1.3)} }
+.confetti-container { position: fixed; inset: 0; pointer-events: none; overflow: hidden; }
+.confetti { position: absolute; width: 10px; height: 10px; border-radius: 2px; animation: confettiFall linear forwards; }
+@keyframes confettiFall { 0% { transform: translateY(-20px) rotate(0deg); opacity: 1; } 100% { transform: translateY(110vh) rotate(720deg); opacity: 0; } }
+
+/* ===== NOTIFICATIONS ===== */
+.notif-list { display: flex; flex-direction: column; }
+.notif-item { display: flex; gap: 14px; padding: 14px 20px; border-bottom: 1px solid var(--gray-100); cursor: pointer; transition: background 0.2s; }
+.notif-item.unread { background: var(--green-light); }
+.notif-item:active { background: var(--gray-100); }
+.notif-icon { width: 44px; height: 44px; border-radius: 50%; background: var(--green-light); display: flex; align-items: center; justify-content: center; font-size: 20px; flex-shrink: 0; }
+.notif-text { flex: 1; font-size: 14px; color: var(--text); line-height: 1.5; }
+.notif-text strong { font-weight: 700; }
+.notif-time { font-size: 11px; color: var(--gray-400); margin-top: 4px; }
+
+/* ===== PREMIUM ===== */
+.premium-header { background: linear-gradient(160deg, #1a0533, #4a0080, #8B00FF); padding: 40px 24px; text-align: center; position: relative; overflow: hidden; }
+.premium-header::before { content: '⭐'; position: absolute; font-size: 200px; opacity: 0.05; top: -60px; right: -40px; }
+.premium-title { font-family: var(--font-display); font-size: 32px; font-weight: 800; color: white; margin-bottom: 8px; }
+.premium-sub { color: rgba(255,255,255,0.7); font-size: 14px; }
+.premium-badge { display: inline-flex; align-items: center; gap: 6px; background: var(--gold); color: #1a0533; padding: 6px 16px; border-radius: 20px; font-weight: 700; font-size: 13px; margin-bottom: 16px; }
+.plan-cards { padding: 20px; display: flex; flex-direction: column; gap: 14px; }
+.plan-card { border: 2px solid var(--gray-200); border-radius: var(--radius); padding: 20px; cursor: pointer; transition: all 0.3s; position: relative; overflow: hidden; }
+.plan-card.recommended { border-color: var(--gold); }
+.plan-recommend-badge { position: absolute; top: 12px; right: 12px; background: var(--gold); color: #1a0533; font-size: 10px; font-weight: 700; padding: 3px 8px; border-radius: 8px; }
+.plan-name { font-family: var(--font-display); font-size: 18px; font-weight: 700; color: var(--text); margin-bottom: 4px; }
+.plan-price { font-family: var(--font-display); font-size: 28px; font-weight: 800; color: var(--green); }
+.plan-price span { font-size: 14px; font-weight: 500; color: var(--text-muted); }
+.plan-features { margin-top: 12px; display: flex; flex-direction: column; gap: 6px; }
+.plan-feature { font-size: 13px; color: var(--text-muted); display: flex; align-items: center; gap: 6px; }
+.plan-feature::before { content: '✓'; color: var(--green); font-weight: 700; }
+
+/* ===== PAYSTACK ===== */
+.paystack-badge { display: flex; align-items: center; gap: 8px; background: var(--gray-100); border-radius: var(--radius-sm); padding: 10px 14px; }
+.paystack-badge-text { font-size: 12px; color: var(--text-muted); }
+.paystack-badge strong { color: var(--green); }
+.payment-methods { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.pay-method { border: 1.5px solid var(--gray-200); border-radius: var(--radius-sm); padding: 14px; display: flex; flex-direction: column; align-items: center; gap: 6px; cursor: pointer; transition: all 0.2s; }
+.pay-method.selected { border-color: var(--green); background: var(--green-light); }
+.pay-method-icon { font-size: 24px; }
+.pay-method-label { font-size: 12px; font-weight: 600; color: var(--text); }
+.deposit-info { background: var(--green-light); border-left: 4px solid var(--green); padding: 12px 16px; border-radius: 0 var(--radius-sm) var(--radius-sm) 0; margin: 16px 0; }
+.deposit-info-title { font-weight: 700; font-size: 13px; color: var(--green-dark); margin-bottom: 4px; }
+.deposit-info-text { font-size: 12px; color: var(--text-muted); }
+
+/* ===== EMPTY STATES ===== */
+.empty-state { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 60px 32px; gap: 16px; text-align: center; }
+.empty-emoji { font-size: 56px; }
+.empty-title { font-family: var(--font-display); font-size: 22px; font-weight: 700; color: var(--text); }
+.empty-sub { font-size: 14px; color: var(--text-muted); line-height: 1.6; max-width: 280px; }
+
+/* ===== MAP VIEW ===== */
+.map-placeholder { flex: 1; background: linear-gradient(135deg, #1a2a1a, #2d5a2d); display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 16px; position: relative; overflow: hidden; }
+.map-grid { position: absolute; inset: 0; background-image: linear-gradient(rgba(255,255,255,.05) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.05) 1px, transparent 1px); background-size: 40px 40px; }
+.map-pin { position: absolute; font-size: 28px; cursor: pointer; transition: transform 0.2s; animation: pinPulse 2s infinite; }
+@keyframes pinPulse { 0%,100%{transform:scale(1) translateY(0)} 50%{transform:scale(1.1) translateY(-4px)} }
+.map-center-btn { background: var(--green); color: white; border: none; padding: 12px 24px; border-radius: var(--radius); font-family: var(--font-display); font-weight: 700; font-size: 15px; cursor: pointer; box-shadow: var(--shadow-md); }
+
+/* ===== ADMIN DASH ===== */
+.admin-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; padding: 20px; }
+.admin-stat { background: var(--white); border: 1px solid var(--gray-200); border-radius: var(--radius); padding: 18px; }
+.admin-stat-value { font-family: var(--font-display); font-size: 28px; font-weight: 800; color: var(--text); }
+.admin-stat-label { font-size: 12px; color: var(--text-muted); margin-top: 4px; }
+.admin-stat-change { font-size: 11px; font-weight: 600; margin-top: 6px; }
+.admin-stat-change.up { color: var(--green); }
+.admin-stat-change.down { color: var(--danger); }
+
+/* ===== VENDOR PROFILE SETUP ===== */
+.upload-area { border: 2px dashed var(--gray-200); border-radius: var(--radius); padding: 32px; display: flex; flex-direction: column; align-items: center; gap: 10px; cursor: pointer; transition: all 0.2s; }
+.upload-area:hover { border-color: var(--green); background: var(--green-light); }
+.upload-icon { font-size: 36px; }
+.upload-text { font-size: 14px; color: var(--text-muted); text-align: center; }
+.calendar-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; }
+.cal-day { aspect-ratio: 1; border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 12px; cursor: pointer; transition: all 0.2s; color: var(--text); }
+.cal-day:hover { background: var(--green-light); }
+.cal-day.booked { background: var(--danger); color: white; border-radius: 50%; }
+.cal-day.available { background: var(--green); color: white; border-radius: 50%; }
+.cal-day.today { border: 2px solid var(--green); border-radius: 50%; }
+
+/* ===== UTILITY ===== */
+.divider { height: 1px; background: var(--gray-200); margin: 0 20px; }
+.tag-green { background: var(--green-light); color: var(--green-dark); padding: 4px 10px; border-radius: 12px; font-size: 12px; font-weight: 600; }
+.tag-gold { background: #FFF8E1; color: var(--gold-deep); padding: 4px 10px; border-radius: 12px; font-size: 12px; font-weight: 600; }
+.tag-red { background: #FFEBEE; color: var(--danger); padding: 4px 10px; border-radius: 12px; font-size: 12px; font-weight: 600; }
+.flex-row { display: flex; align-items: center; gap: 10px; }
+.flex-between { display: flex; align-items: center; justify-content: space-between; }
+.p-20 { padding: 20px; }
+.mt-8 { margin-top: 8px; }
+.mt-16 { margin-top: 16px; }
+.text-center { text-align: center; }
+.text-muted { color: var(--text-muted); font-size: 13px; }
+.link { color: var(--green); font-weight: 600; cursor: pointer; }
+.hr { height: 8px; background: var(--gray-100); margin: 0 -20px; }
+.naira { font-family: var(--font-display); }
+
+/* ScrollBar */
+.screen-body::-webkit-scrollbar { width: 0; }
+.form-section::-webkit-scrollbar { width: 0; }
+
+/* Animations */
+.slide-up { animation: slideUp 0.4s ease forwards; }
+@keyframes slideUp { from{transform:translateY(20px);opacity:0} to{transform:translateY(0);opacity:1} }
+.fade-in { animation: fadeIn 0.3s ease forwards; }
+
+/* Toast */
+.toast { position: fixed; bottom: 80px; left: 50%; transform: translateX(-50%); background: var(--dark); color: white; padding: 12px 20px; border-radius: 24px; font-size: 14px; font-weight: 500; z-index: 2000; white-space: nowrap; box-shadow: var(--shadow-lg); transition: all 0.3s; opacity: 0; pointer-events: none; }
+.toast.show { opacity: 1; }
+.loading-spinner { width: 36px; height: 36px; border: 3px solid var(--gray-200); border-top-color: var(--green); border-radius: 50%; animation: spin 0.8s linear infinite; }
+@keyframes spin { to{transform:rotate(360deg)} }
+
+/* Review stars */
+.stars { display: flex; gap: 4px; }
+.star { font-size: 22px; cursor: pointer; transition: transform 0.1s; }
+.star:hover { transform: scale(1.2); }
+
+/* Search bar */
+.search-bar { margin: 12px 20px; display: flex; align-items: center; gap: 10px; background: var(--gray-100); border-radius: 12px; padding: 10px 14px; }
+.search-bar input { flex: 1; background: none; border: none; outline: none; font-family: var(--font-body); font-size: 14px; color: var(--text); }
+.search-bar input::placeholder { color: var(--gray-400); }
+
+/* Segment control */
+.segment { display: flex; background: var(--gray-100); border-radius: 10px; padding: 3px; margin: 12px 20px; }
+.seg-btn { flex: 1; padding: 8px; border: none; background: none; border-radius: 8px; font-family: var(--font-body); font-size: 13px; font-weight: 600; color: var(--text-muted); cursor: pointer; transition: all 0.2s; }
+.seg-btn.active { background: var(--white); color: var(--green); box-shadow: var(--shadow-sm); }
+
+@media(min-width:481px){
+  body::before { content:''; position:fixed; inset:0; background:linear-gradient(135deg,#003D1F,#001a0e); z-index:-1; }
+  #app { top:20px; bottom:20px; border-radius:36px; height:auto; }
+}
+</style>
+</head>
+<body>
+<div id="app">
+
+<!-- SPLASH -->
+<div class="screen" id="screen-splash">
+  <div class="splash-bg-pattern"></div>
+  <div class="splash-content">
+    <div class="splash-emojis">🎉🎊🥂</div>
+    <div class="splash-logo">Vend<span>Swipe</span><span class="splash-ng">NG</span></div>
+    <div class="splash-tagline">Swipe right on the perfect event vendor in Nigeria 🇳🇬</div>
+    <div class="splash-loader"><div class="splash-loader-fill" id="splash-loader"></div></div>
+  </div>
+</div>
+
+<!-- ROLE SELECTION -->
+<div class="screen hidden" id="screen-role">
+  <div class="onboard-header">
+    <div class="step-dots">
+      <div class="step-dot active"></div><div class="step-dot"></div><div class="step-dot"></div>
+    </div>
+    <button class="theme-toggle" onclick="toggleTheme()">🌙</button>
+  </div>
+  <div class="onboard-body">
+    <div class="onboard-title">Welcome to <span class="accent">VendSwipe NG</span> 🎊</div>
+    <div class="onboard-sub">Nigeria's #1 platform for connecting event organisers with top-rated vendors. Who are you?</div>
+    <div class="role-cards">
+      <div class="role-card" id="role-client" onclick="selectRole('client')">
+        <div class="role-check">✓</div>
+        <span class="role-emoji">🥂</span>
+        <div class="role-title">I'm Organising an Event</div>
+        <div class="role-desc">Find caterers, decorators, DJs, photographers, MUAs and more for your owambe, wedding, birthday or corporate event.</div>
+      </div>
+      <div class="role-card" id="role-vendor" onclick="selectRole('vendor')">
+        <div class="role-check">✓</div>
+        <span class="role-emoji">💼</span>
+        <div class="role-title">I Provide Services</div>
+        <div class="role-desc">Showcase your business, get discovered by clients organising events in your city, and grow your bookings.</div>
+      </div>
+    </div>
+    <div style="margin-top: auto; padding-top: 24px;">
+      <button class="btn btn-primary" id="role-next-btn" onclick="goToPhone()" disabled>Continue →</button>
+    </div>
+  </div>
+</div>
+
+<!-- PHONE OTP -->
+<div class="screen hidden" id="screen-phone">
+  <div class="onboard-header">
+    <button class="back-btn" onclick="showScreen('screen-role')">←</button>
+    <div class="step-dots">
+      <div class="step-dot"></div><div class="step-dot active"></div><div class="step-dot"></div>
+    </div>
+  </div>
+  <div class="onboard-body">
+    <div class="onboard-title">Enter your<br><span class="accent">phone number</span></div>
+    <div class="onboard-sub">We'll send a 6-digit OTP to verify your Nigerian number 📱</div>
+    <label class="input-label">Phone Number</label>
+    <div class="phone-input-wrap">
+      <div class="country-code"><span class="country-flag">🇳🇬</span>+234</div>
+      <input type="tel" class="input-field" id="phone-input" placeholder="801 234 5678" maxlength="10" oninput="validatePhone()">
+    </div>
+    <div class="text-muted" style="margin-top:-8px">Your number is safe & won't be shared publicly</div>
+    <div style="margin-top: 24px;">
+      <button class="btn btn-primary" id="send-otp-btn" onclick="sendOTP()" disabled>Send OTP →</button>
+    </div>
+    <div style="text-align:center;margin-top:20px">
+      <span class="text-muted">Continue with </span>
+      <span class="link" onclick="showScreen('screen-otp');state.phone='08012345678'">Google</span>
+    </div>
+  </div>
+</div>
+
+<!-- OTP VERIFY -->
+<div class="screen hidden" id="screen-otp">
+  <div class="onboard-header">
+    <button class="back-btn" onclick="showScreen('screen-phone')">←</button>
+    <div class="step-dots">
+      <div class="step-dot"></div><div class="step-dot active"></div><div class="step-dot"></div>
+    </div>
+  </div>
+  <div class="onboard-body">
+    <div class="onboard-title">Check your<br><span class="accent">messages</span> 📨</div>
+    <div class="onboard-sub" id="otp-sub">We sent a 6-digit code to <strong>+234 8012345678</strong></div>
+    <div class="otp-inputs" id="otp-inputs">
+      <input type="number" class="otp-input" maxlength="1" oninput="otpInput(this,0)" onfocus="this.select()">
+      <input type="number" class="otp-input" maxlength="1" oninput="otpInput(this,1)" onfocus="this.select()">
+      <input type="number" class="otp-input" maxlength="1" oninput="otpInput(this,2)" onfocus="this.select()">
+      <input type="number" class="otp-input" maxlength="1" oninput="otpInput(this,3)" onfocus="this.select()">
+      <input type="number" class="otp-input" maxlength="1" oninput="otpInput(this,4)" onfocus="this.select()">
+      <input type="number" class="otp-input" maxlength="1" oninput="otpInput(this,5)" onfocus="this.select()">
+    </div>
+    <div style="text-align:center;margin-bottom:24px">
+      <span class="text-muted">Didn't receive code? </span>
+      <span class="link">Resend in 0:45</span>
+    </div>
+    <button class="btn btn-primary" id="verify-btn" onclick="verifyOTP()" disabled>Verify & Continue →</button>
+    <div style="text-align:center;margin-top:16px;font-size:12px;color:var(--gray-400)">For demo, enter code: <strong>123456</strong></div>
+  </div>
+</div>
+
+<!-- PROFILE SETUP -->
+<div class="screen hidden" id="screen-setup">
+  <div class="onboard-header">
+    <button class="back-btn" onclick="showScreen('screen-otp')">←</button>
+    <div class="step-dots">
+      <div class="step-dot"></div><div class="step-dot"></div><div class="step-dot active"></div>
+    </div>
+  </div>
+  <div class="onboard-body" style="overflow-y:auto">
+    <div class="onboard-title">Set up your<br><span class="accent">profile</span> ✨</div>
+    <div class="onboard-sub" id="setup-sub">Almost done! Tell us about yourself.</div>
+    <div id="setup-client-fields">
+      <div class="form-group">
+        <label class="input-label">Full Name *</label>
+        <input type="text" class="input-field" placeholder="e.g. Chioma Okafor" id="setup-name">
+      </div>
+      <div class="form-group" style="margin-top:16px">
+        <label class="input-label">Your City *</label>
+        <select class="select-field" id="setup-city">
+          <option value="">Select city</option>
+          <option>Lagos</option><option>Abuja</option><option>Port Harcourt</option>
+          <option>Ibadan</option><option>Kano</option><option>Enugu</option>
+          <option>Benin City</option><option>Kaduna</option><option>Aba</option>
+          <option>Uyo</option><option>Warri</option><option>Onitsha</option>
+        </select>
+      </div>
+      <div class="form-group" style="margin-top:16px">
+        <label class="input-label">Profile Photo *</label>
+        <div class="upload-area" onclick="showToast('📸 Camera access coming in native app!')">
+          <div class="upload-icon">🤳</div>
+          <div class="upload-text">Tap to take or upload a clear photo of yourself<br><span style="font-size:11px;opacity:0.7">Profile photo is mandatory</span></div>
+        </div>
+      </div>
+    </div>
+    <div id="setup-vendor-extra" style="display:none">
+      <div class="form-group" style="margin-top:16px">
+        <label class="input-label">Business Name *</label>
+        <input type="text" class="input-field" placeholder="e.g. Luxury Events by Adaeze" id="setup-biz">
+      </div>
+      <div class="form-group" style="margin-top:16px">
+        <label class="input-label">Service Categories (select all that apply)</label>
+        <div class="chips-select" id="cat-chips" style="margin-top:8px"></div>
+      </div>
+      <div class="form-group" style="margin-top:16px">
+        <label class="input-label">Service Radius</label>
+        <select class="select-field" id="setup-radius">
+          <option>5 km</option><option>10 km</option><option>25 km</option>
+          <option selected>50 km</option><option>100 km</option><option>200 km</option><option>Nationwide</option>
+        </select>
+      </div>
+    </div>
+    <div style="margin-top:24px">
+      <button class="btn btn-primary" onclick="completeSetup()">Let's Go! 🎉</button>
+    </div>
+  </div>
+</div>
+
+<!-- MAIN APP (CLIENT) -->
+<div class="screen hidden" id="screen-main">
+  <div class="top-bar">
+    <div>
+      <div style="font-size:11px;color:var(--text-muted);font-weight:600">GOOD AFTERNOON 👋</div>
+      <div class="top-bar-title" id="main-greeting">Hey Chioma!</div>
+    </div>
+    <button class="btn-icon" onclick="showScreen('screen-notifs')">🔔</button>
+    <div class="avatar" onclick="showScreen('screen-profile')">
+      <span id="main-avatar-emoji">👤</span>
+    </div>
+  </div>
+  
+  <!-- Tabs -->
+  <div class="segment" style="margin-top:0">
+    <button class="seg-btn active" id="tab-swipe" onclick="switchMainTab('swipe')">🔥 Swipe</button>
+    <button class="seg-btn" id="tab-events" onclick="switchMainTab('events')">📋 My Events</button>
+    <button class="seg-btn" id="tab-matches" onclick="switchMainTab('matches')">💚 Matches</button>
+  </div>
+  
+  <!-- SWIPE TAB -->
+  <div id="main-swipe-tab" class="swipe-screen">
+    <div class="swipe-filters">
+      <div class="filter-chip active" onclick="filterTap(this)"><span class="chip-emoji">🌍</span>All Lagos</div>
+      <div class="filter-chip" onclick="filterTap(this)"><span class="chip-emoji">📸</span>Photographer</div>
+      <div class="filter-chip" onclick="filterTap(this)"><span class="chip-emoji">🍽️</span>Caterer</div>
+      <div class="filter-chip" onclick="filterTap(this)"><span class="chip-emoji">🎵</span>DJ/Band</div>
+      <div class="filter-chip" onclick="filterTap(this)"><span class="chip-emoji">🌸</span>Decorator</div>
+      <div class="filter-chip" onclick="filterTap(this)"><span class="chip-emoji">💄</span>MUA</div>
+      <div class="filter-chip" onclick="showScreen('screen-filters')"><span class="chip-emoji">⚙️</span>Filters</div>
+    </div>
+    <div class="card-stack" id="card-stack">
+      <!-- Cards injected by JS -->
+    </div>
+    <div class="swipe-actions">
+      <button class="swipe-btn btn-rewind" onclick="rewindCard()" title="Rewind">↩️</button>
+      <button class="swipe-btn btn-pass" onclick="swipeCard('left')" title="Pass">✗</button>
+      <button class="swipe-btn btn-like" onclick="swipeCard('right')" title="Like">💚</button>
+      <button class="swipe-btn btn-super" onclick="swipeCard('up')" title="Super Like">⭐</button>
+      <button class="swipe-btn btn-boost" onclick="showScreen('screen-premium')" title="Boost">⚡</button>
+    </div>
+  </div>
+  
+  <!-- EVENTS TAB -->
+  <div id="main-events-tab" style="display:none;flex:1;overflow-y:auto">
+    <div style="padding:16px 20px;display:flex;justify-content:space-between;align-items:center">
+      <div class="section-title" style="padding:0">My Events</div>
+      <button class="btn btn-primary btn-sm" onclick="showScreen('screen-create-event')" style="width:auto">+ Create Event</button>
+    </div>
+    <div class="events-list" id="events-list">
+      <!-- Events injected by JS -->
+    </div>
+  </div>
+  
+  <!-- MATCHES TAB -->
+  <div id="main-matches-tab" style="display:none;flex:1;overflow-y:auto">
+    <div class="section-title">New Matches 🎉</div>
+    <div class="matches-row" id="matches-row">
+      <!-- Matches injected -->
+    </div>
+    <div class="divider"></div>
+    <div class="section-title">Conversations</div>
+    <div class="conv-list" id="conv-list">
+      <!-- Convs injected -->
+    </div>
+  </div>
+  
+  <div class="bottom-nav" id="main-bottom-nav">
+    <div class="nav-item active" onclick="switchTab(this,'main-swipe-tab','screen-main')">
+      <div class="nav-icon">🔥</div><div class="nav-label">Discover</div>
+    </div>
+    <div class="nav-item" onclick="showScreen('screen-map')">
+      <div class="nav-icon">🗺️</div><div class="nav-label">Map</div>
+    </div>
+    <div class="nav-item" onclick="switchMainTab('matches')">
+      <div class="nav-icon">💬</div><div class="nav-label">Matches</div>
+      <div class="nav-badge">3</div>
+    </div>
+    <div class="nav-item" onclick="showScreen('screen-premium')">
+      <div class="nav-icon">⭐</div><div class="nav-label">Premium</div>
+    </div>
+    <div class="nav-item" onclick="showScreen('screen-profile')">
+      <div class="nav-icon">👤</div><div class="nav-label">Profile</div>
+    </div>
+  </div>
+</div>
+
+<!-- VENDOR MAIN -->
+<div class="screen hidden" id="screen-vendor-main">
+  <div class="top-bar">
+    <div>
+      <div style="font-size:11px;color:var(--text-muted);font-weight:600">VENDOR DASHBOARD 💼</div>
+      <div class="top-bar-title" id="vendor-greeting">Luxury Events NG</div>
+    </div>
+    <button class="btn-icon" onclick="showScreen('screen-notifs')">🔔</button>
+    <div class="avatar" onclick="showScreen('screen-vendor-profile')">💼</div>
+  </div>
+  
+  <div class="segment" style="margin-top:0">
+    <button class="seg-btn active" id="vtab-swipe" onclick="switchVendorTab('swipe')">🔥 Events</button>
+    <button class="seg-btn" id="vtab-matches" onclick="switchVendorTab('matches')">💚 Matches</button>
+    <button class="seg-btn" id="vtab-analytics" onclick="switchVendorTab('analytics')">📊 Stats</button>
+  </div>
+  
+  <div id="vendor-swipe-tab" class="swipe-screen">
+    <div class="swipe-filters">
+      <div class="filter-chip active" onclick="filterTap(this)">🌍 All Events</div>
+      <div class="filter-chip" onclick="filterTap(this)">💒 Weddings</div>
+      <div class="filter-chip" onclick="filterTap(this)">🎂 Birthdays</div>
+      <div class="filter-chip" onclick="filterTap(this)">🏢 Corporate</div>
+      <div class="filter-chip" onclick="filterTap(this)">💰 High Budget</div>
+    </div>
+    <div class="card-stack" id="vendor-card-stack"></div>
+    <div class="swipe-actions">
+      <button class="swipe-btn btn-rewind" onclick="rewindCard()">↩️</button>
+      <button class="swipe-btn btn-pass" onclick="swipeVendorCard('left')">✗</button>
+      <button class="swipe-btn btn-like" onclick="swipeVendorCard('right')">💚</button>
+      <button class="swipe-btn btn-super" onclick="swipeVendorCard('up')">⭐</button>
+      <button class="swipe-btn btn-boost" onclick="showScreen('screen-premium')">⚡</button>
+    </div>
+  </div>
+  
+  <div id="vendor-matches-tab" style="display:none;flex:1;overflow-y:auto">
+    <div class="section-title">New Matches 🎉</div>
+    <div class="matches-row" id="vendor-matches-row"></div>
+    <div class="divider"></div>
+    <div class="section-title">Conversations</div>
+    <div class="conv-list" id="vendor-conv-list"></div>
+  </div>
+  
+  <div id="vendor-analytics-tab" style="display:none;flex:1;overflow-y:auto">
+    <div class="admin-stats">
+      <div class="admin-stat"><div class="admin-stat-value">47</div><div class="admin-stat-label">Profile Views</div><div class="admin-stat-change up">↑ 23% this week</div></div>
+      <div class="admin-stat"><div class="admin-stat-value">12</div><div class="admin-stat-label">Total Matches</div><div class="admin-stat-change up">↑ 4 new</div></div>
+      <div class="admin-stat"><div class="admin-stat-value">₦850k</div><div class="admin-stat-label">Revenue Pipeline</div><div class="admin-stat-change up">↑ Active</div></div>
+      <div class="admin-stat"><div class="admin-stat-value">4.9⭐</div><div class="admin-stat-label">Avg Rating</div><div class="admin-stat-change up">↑ Excellent</div></div>
+    </div>
+    <div class="p-20">
+      <div class="section-title" style="padding:0;margin-bottom:12px">Swipe Limit (Free Plan)</div>
+      <div style="background:var(--gray-100);border-radius:var(--radius);padding:16px">
+        <div class="flex-between" style="margin-bottom:8px">
+          <span style="font-size:13px;font-weight:600">Today's swipes used</span>
+          <span style="font-size:13px;color:var(--text-muted)">14 / 20</span>
+        </div>
+        <div style="height:8px;background:var(--gray-200);border-radius:4px;overflow:hidden">
+          <div style="height:100%;width:70%;background:var(--green);border-radius:4px"></div>
+        </div>
+        <div style="margin-top:12px">
+          <button class="btn btn-gold btn-sm" onclick="showScreen('screen-premium')">⚡ Go Premium – Unlimited Swipes</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <div class="bottom-nav">
+    <div class="nav-item active" onclick="switchVendorTab('swipe')">
+      <div class="nav-icon">🔥</div><div class="nav-label">Events</div>
+    </div>
+    <div class="nav-item" onclick="showScreen('screen-map')">
+      <div class="nav-icon">🗺️</div><div class="nav-label">Map</div>
+    </div>
+    <div class="nav-item" onclick="switchVendorTab('matches')">
+      <div class="nav-icon">💬</div><div class="nav-label">Matches</div>
+      <div class="nav-badge">5</div>
+    </div>
+    <div class="nav-item" onclick="showScreen('screen-premium')">
+      <div class="nav-icon">⭐</div><div class="nav-label">Premium</div>
+    </div>
+    <div class="nav-item" onclick="showScreen('screen-vendor-profile')">
+      <div class="nav-icon">👤</div><div class="nav-label">Profile</div>
+    </div>
+  </div>
+</div>
+
+<!-- CREATE EVENT -->
+<div class="screen hidden" id="screen-create-event">
+  <div class="top-bar">
+    <button class="back-btn" onclick="showScreen('screen-main')">←</button>
+    <div class="top-bar-title">Create Event</div>
+  </div>
+  <div class="screen-body">
+    <div class="form-section">
+      <div class="form-group">
+        <label class="input-label">Event Title *</label>
+        <input type="text" class="input-field" placeholder="e.g. Chioma's 30th Birthday Owambe 🎂" id="ev-title">
+      </div>
+      <div class="form-group">
+        <label class="input-label">Event Type *</label>
+        <select class="select-field" id="ev-type">
+          <option value="">Select type</option>
+          <option>💒 Wedding (White)</option><option>👘 Wedding (Traditional)</option>
+          <option>🎂 Birthday / Owambe</option><option>🏢 Corporate Event</option>
+          <option>⚫ Burial / Funeral</option><option>🏠 Housewarming</option>
+          <option>👶 Baby Naming</option><option>🎓 Graduation Party</option>
+          <option>🚀 Product Launch</option><option>🎭 Other</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="input-label">Event Date *</label>
+        <input type="date" class="input-field" id="ev-date">
+      </div>
+      <div class="form-group">
+        <label class="input-label">Expected Guests</label>
+        <select class="select-field" id="ev-guests">
+          <option>Under 50</option><option>50–100</option><option>100–200</option>
+          <option selected>200–500</option><option>500–1000</option><option>1000+</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="input-label">Location / City *</label>
+        <select class="select-field" id="ev-city">
+          <option>Lagos</option><option>Abuja</option><option>Port Harcourt</option>
+          <option>Ibadan</option><option>Kano</option><option>Enugu</option><option>Benin City</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="input-label">Budget Range (₦) *</label>
+        <div class="range-inputs">
+          <input type="text" class="input-field" placeholder="Min e.g. 500,000" id="ev-budget-min">
+          <div class="range-sep">–</div>
+          <input type="text" class="input-field" placeholder="Max e.g. 2,000,000" id="ev-budget-max">
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="input-label">Vendors Needed (select all)</label>
+        <div class="chips-select" id="ev-vendor-chips"></div>
+      </div>
+      <div class="form-group">
+        <label class="input-label">Event Brief</label>
+        <textarea class="textarea-field" placeholder="Describe your dream event – theme, vibe, special requirements..." id="ev-brief"></textarea>
+      </div>
+      <div class="form-group">
+        <label class="input-label">Mood Board (up to 10 photos)</label>
+        <div class="upload-area" onclick="showToast('📸 Upload feature in native app!')">
+          <div class="upload-icon">🖼️</div>
+          <div class="upload-text">Upload inspiration photos for your event<br><span style="font-size:11px;opacity:0.7">Max 10 photos • JPEG/PNG</span></div>
+        </div>
+      </div>
+      <button class="btn btn-primary" onclick="createEvent()">Publish Event Request 🚀</button>
+    </div>
+  </div>
+</div>
+
+<!-- VENDOR DETAIL -->
+<div class="screen hidden" id="screen-vendor-detail">
+  <div style="position:relative">
+    <button class="back-btn" style="position:absolute;top:16px;left:16px;z-index:10;background:rgba(0,0,0,0.4);border-color:transparent;color:white" onclick="showScreen('screen-main')">←</button>
+    <button class="btn-icon" style="position:absolute;top:16px;right:16px;z-index:10;background:rgba(0,0,0,0.4);color:white;border-radius:50%;width:40px;height:40px" onclick="showToast('❤️ Added to favourites!')">❤️</button>
+    <div id="vendor-detail-photo" style="height:320px;background:linear-gradient(135deg,#1a472a,#2d6a4f);display:flex;align-items:center;justify-content:center;font-size:80px">📸</div>
+  </div>
+  <div class="screen-body">
+    <div class="p-20">
+      <div class="flex-between" style="margin-bottom:8px">
+        <div id="vendor-detail-name" class="profile-name">Vendor Name</div>
+        <div class="card-rating">⭐ 4.9 <span style="color:var(--gray-400)">(127)</span></div>
+      </div>
+      <div id="vendor-detail-cats" class="card-tags" style="margin-bottom:12px"></div>
+      <div style="display:flex;gap:16px;margin-bottom:16px">
+        <span class="card-distance">📍 3.2 km away</span>
+        <span class="tag-green">✅ Verified</span>
+        <span class="tag-gold">⚡ Quick Response</span>
+      </div>
+      <div style="font-size:14px;color:var(--text-muted);line-height:1.7;margin-bottom:20px" id="vendor-detail-bio">
+        Award-winning event service provider with 8+ years of experience creating magical moments across Lagos, Abuja, and Port Harcourt. We handle everything from intimate gatherings to grand celebrations of 2000+ guests.
+      </div>
+      <div class="hr" style="margin:0 -20px 20px"></div>
+      <div class="section-title" style="padding:0;margin-bottom:12px">Portfolio Gallery</div>
+      <div class="portfolio-grid">
+        <div class="portfolio-item" style="background:linear-gradient(135deg,#1a472a,#2d6a4f)" onclick="showToast('🖼️ Gallery view in native app!')">🌸</div>
+        <div class="portfolio-item" style="background:linear-gradient(135deg,#2d1b69,#4a0e5e)">📸</div>
+        <div class="portfolio-item" style="background:linear-gradient(135deg,#7b2d00,#c04a00)">🍽️</div>
+        <div class="portfolio-item" style="background:linear-gradient(135deg,#00416a,#003d6b)">🎵</div>
+        <div class="portfolio-item" style="background:linear-gradient(135deg,#1a3a1a,#2d5a2d)">💐</div>
+        <div class="portfolio-item" style="background:linear-gradient(135deg,#3d1a00,#6b2d00)">🎂</div>
+      </div>
+      <div class="hr" style="margin:20px -20px"></div>
+      <div class="section-title" style="padding:0;margin-bottom:12px">Pricing</div>
+      <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:20px" id="vendor-detail-pricing"></div>
+      <div class="hr" style="margin:0 -20px 20px"></div>
+      <div class="section-title" style="padding:0;margin-bottom:12px">Reviews ⭐</div>
+      <div style="display:flex;flex-direction:column;gap:16px;margin-bottom:20px">
+        <div style="background:var(--gray-100);border-radius:var(--radius-sm);padding:14px">
+          <div class="flex-between" style="margin-bottom:6px">
+            <strong style="font-size:14px">Adaeze O.</strong>
+            <span style="color:var(--gold-deep);font-size:12px">⭐⭐⭐⭐⭐</span>
+          </div>
+          <div style="font-size:13px;color:var(--text-muted)">Absolutely outstanding! They transformed our venue beyond our expectations. The florals were breathtaking and the team was so professional.</div>
+          <div style="font-size:11px;color:var(--gray-400);margin-top:6px">Wedding • Lagos • 2 months ago</div>
+        </div>
+        <div style="background:var(--gray-100);border-radius:var(--radius-sm);padding:14px">
+          <div class="flex-between" style="margin-bottom:6px">
+            <strong style="font-size:14px">Emeka J.</strong>
+            <span style="color:var(--gold-deep);font-size:12px">⭐⭐⭐⭐⭐</span>
+          </div>
+          <div style="font-size:13px;color:var(--text-muted)">Hired them for my birthday owambe. Everything was perfect – decor, lighting, even the small chops were on point! Highly recommended!</div>
+          <div style="font-size:11px;color:var(--gray-400);margin-top:6px">Birthday/Owambe • Lagos • 3 months ago</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div style="padding:16px 20px;border-top:1px solid var(--gray-200);background:var(--white);display:flex;gap:12px">
+    <button class="btn btn-outline" style="width:auto;flex:1" onclick="showScreen('screen-chat')">💬 Message</button>
+    <button class="btn btn-primary" style="flex:2" onclick="showScreen('screen-booking')">📅 Book & Pay</button>
+  </div>
+</div>
+
+<!-- BOOKING & PAYMENT -->
+<div class="screen hidden" id="screen-booking">
+  <div class="top-bar">
+    <button class="back-btn" onclick="showScreen('screen-vendor-detail')">←</button>
+    <div class="top-bar-title">Book & Pay</div>
+  </div>
+  <div class="screen-body">
+    <div class="p-20">
+      <div style="background:var(--gray-100);border-radius:var(--radius);padding:16px;margin-bottom:20px;display:flex;gap:14px;align-items:center">
+        <div style="font-size:36px">🌸</div>
+        <div>
+          <div style="font-weight:700;font-size:15px" id="book-vendor-name">Luxury Events by Adaeze</div>
+          <div style="font-size:13px;color:var(--text-muted)">Wedding Decor • Lagos</div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="input-label">Service Package</label>
+        <select class="select-field">
+          <option>Full Wedding Decor – ₦850,000</option>
+          <option>Basic Setup – ₦350,000</option>
+          <option>Premium Luxury Package – ₦1,500,000</option>
+        </select>
+      </div>
+      <div class="form-group" style="margin-top:16px">
+        <label class="input-label">Event Date</label>
+        <input type="date" class="input-field">
+      </div>
+      <div class="deposit-info">
+        <div class="deposit-info-title">💡 Deposit Payment Policy</div>
+        <div class="deposit-info-text">Pay 30% deposit now (₦255,000) to secure your booking. The remaining ₦595,000 is due on the event date after service delivery.</div>
+      </div>
+      <div class="section-title" style="padding:0;margin-bottom:12px">Payment Method</div>
+      <div class="payment-methods" id="payment-methods">
+        <div class="pay-method selected" onclick="selectPayMethod(this)">
+          <div class="pay-method-icon">💳</div>
+          <div class="pay-method-label">Card</div>
+        </div>
+        <div class="pay-method" onclick="selectPayMethod(this)">
+          <div class="pay-method-icon">🏦</div>
+          <div class="pay-method-label">Bank Transfer</div>
+        </div>
+        <div class="pay-method" onclick="selectPayMethod(this)">
+          <div class="pay-method-icon">📱</div>
+          <div class="pay-method-label">USSD</div>
+        </div>
+        <div class="pay-method" onclick="selectPayMethod(this)">
+          <div class="pay-method-icon">📷</div>
+          <div class="pay-method-label">QR Code</div>
+        </div>
+      </div>
+      <div style="margin-top:20px">
+        <div class="paystack-badge" style="margin-bottom:16px">
+          <span style="font-size:20px">🔒</span>
+          <div class="paystack-badge-text">Secured by <strong>Paystack</strong> – Nigeria's #1 payment processor. Your card details are encrypted and never stored on our servers.</div>
+        </div>
+        <div style="background:var(--gray-100);border-radius:var(--radius-sm);padding:16px;margin-bottom:16px">
+          <div class="flex-between" style="margin-bottom:6px"><span style="font-size:14px">Service Total</span><span class="naira" style="font-weight:700">₦850,000</span></div>
+          <div class="flex-between" style="margin-bottom:6px"><span style="font-size:14px;color:var(--green)">Deposit (30%)</span><span class="naira" style="font-weight:700;color:var(--green)">₦255,000</span></div>
+          <div class="flex-between" style="margin-bottom:6px;padding-top:8px;border-top:1px solid var(--gray-200)"><span style="font-size:12px;color:var(--text-muted)">Balance on delivery</span><span class="naira" style="font-size:12px;color:var(--text-muted)">₦595,000</span></div>
+        </div>
+        <button class="btn btn-primary" onclick="processPayment()">Pay Deposit – ₦255,000 🔒</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- CHAT -->
+<div class="screen hidden" id="screen-chat">
+  <div class="chat-header">
+    <button class="back-btn" onclick="goBackFromChat()">←</button>
+    <div class="match-avatar" style="width:44px;height:44px;border:2px solid var(--green);font-size:20px" id="chat-avatar">🌸</div>
+    <div class="chat-header-info">
+      <div class="chat-header-name" id="chat-name">Luxury Events by Adaeze</div>
+      <div class="chat-header-status">🟢 Active now</div>
+    </div>
+    <button class="btn-icon" onclick="showScreen('screen-vendor-detail')">ℹ️</button>
+    <button class="btn-icon" onclick="showToast('📞 Voice call coming soon!')">📞</button>
+  </div>
+  <div class="chat-messages" id="chat-messages">
+    <div style="text-align:center;font-size:12px;color:var(--gray-400);padding:8px">🎉 It's a match! You can now chat</div>
+    <div class="msg recv">
+      <div class="msg-bubble">Hello! Congratulations on your upcoming event 🎊 I'd love to help you create something truly magical. Can you tell me more about your vision?</div>
+      <div class="msg-time">10:30 AM</div>
+    </div>
+    <div class="msg sent">
+      <div class="msg-bubble">Hi! Yes, I'm planning a traditional wedding for 300 guests in Lagos. I love the garden themed decor. Budget is around ₦800k–₦1M for decor.</div>
+      <div class="msg-time">10:32 AM</div>
+    </div>
+    <div class="msg recv">
+      <div class="msg-bubble">Perfect! Garden themed weddings are absolutely beautiful 🌿🌸 Here's a proposal based on your requirements:</div>
+      <div class="msg-time">10:35 AM</div>
+    </div>
+    <div class="msg recv" style="max-width:90%">
+      <div class="msg-proposal">
+        <div class="msg-proposal-title">📄 Service Proposal – Garden Wedding Decor</div>
+        <div class="msg-proposal-amount">₦875,000</div>
+        <div style="font-size:13px;color:var(--text-muted);line-height:1.6">
+          ✅ Full venue decoration (indoor + outdoor)<br>
+          ✅ Floral arrangements (premium silk + fresh flowers)<br>
+          ✅ Lighting design & installation<br>
+          ✅ Photo corners & centrepieces<br>
+          ✅ Setup & breakdown crew<br>
+          ✅ 12hr on-site presence
+        </div>
+        <div style="display:flex;gap:8px;margin-top:12px">
+          <button class="btn btn-primary btn-sm" onclick="showScreen('screen-booking')">Accept & Book 🎉</button>
+          <button class="btn btn-secondary btn-sm" onclick="showToast('💬 Negotiating...')">Negotiate</button>
+        </div>
+      </div>
+      <div class="msg-time">10:35 AM</div>
+    </div>
+  </div>
+  <div class="chat-input-wrap">
+    <button class="btn-icon" style="font-size:18px" onclick="showToast('📸 Media sharing in native app!')">📎</button>
+    <button class="btn-icon" style="font-size:18px" onclick="showToast('🎤 Voice notes in native app!')">🎤</button>
+    <textarea class="chat-input" id="chat-input" placeholder="Type a message..." rows="1" onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sendMessage()}"></textarea>
+    <button class="send-btn" onclick="sendMessage()">↑</button>
+  </div>
+</div>
+
+<!-- PROFILE (CLIENT) -->
+<div class="screen hidden" id="screen-profile">
+  <div class="top-bar">
+    <button class="back-btn" onclick="showScreen('screen-main')">←</button>
+    <div class="top-bar-title">Profile</div>
+    <button class="btn-icon" onclick="showToast('✏️ Edit profile coming!')">✏️</button>
+  </div>
+  <div class="screen-body">
+    <div class="profile-hero">
+      <div class="profile-cover"></div>
+      <div class="profile-avatar-wrap">
+        <div class="profile-avatar" style="font-size:36px">👤</div>
+      </div>
+    </div>
+    <div class="profile-body">
+      <div class="profile-name-row">
+        <div class="profile-name" id="profile-name">Chioma Okafor</div>
+        <div class="tag-green">Client 🥂</div>
+      </div>
+      <div class="profile-role-badge">📍 Lagos, Nigeria</div>
+      <div class="profile-bio">Event enthusiast & professional party organiser. Love creating unforgettable celebrations for family and friends 🎉</div>
+      <div class="stats-row">
+        <div class="stat-card"><div class="stat-value">8</div><div class="stat-label">Events Created</div></div>
+        <div class="stat-card"><div class="stat-value">23</div><div class="stat-label">Vendors Matched</div></div>
+        <div class="stat-card"><div class="stat-value">4.8⭐</div><div class="stat-label">Client Rating</div></div>
+      </div>
+      <div class="hr" style="margin:0 -20px 20px"></div>
+      <div class="section-title" style="padding:0;margin-bottom:12px">Shortlisted Vendors ❤️</div>
+      <div style="display:flex;gap:10px;overflow-x:auto;padding-bottom:8px" id="shortlist-row">
+        <div class="match-bubble"><div class="match-avatar">🌸</div><div class="match-name">Adaeze</div></div>
+        <div class="match-bubble"><div class="match-avatar">📸</div><div class="match-name">TJ Photos</div></div>
+        <div class="match-bubble"><div class="match-avatar">🎵</div><div class="match-name">DJ Splash</div></div>
+      </div>
+      <div class="hr" style="margin:20px -20px"></div>
+      <div class="section-title" style="padding:0;margin-bottom:12px">Account Settings</div>
+      <div style="display:flex;flex-direction:column;gap:2px">
+        <div class="conv-item" onclick="showScreen('screen-premium')"><div class="conv-avatar">⭐</div><div class="conv-info"><div class="conv-name">Upgrade to Premium</div><div class="conv-preview">Unlimited swipes, boost & analytics</div></div><div style="color:var(--gray-400);font-size:18px">›</div></div>
+        <div class="conv-item" onclick="showToast('🔔 Notification settings')"><div class="conv-avatar">🔔</div><div class="conv-info"><div class="conv-name">Notifications</div><div class="conv-preview">Matches, messages, reminders</div></div><div style="color:var(--gray-400);font-size:18px">›</div></div>
+        <div class="conv-item" onclick="toggleTheme()"><div class="conv-avatar">🌙</div><div class="conv-info"><div class="conv-name">Dark Mode</div><div class="conv-preview">Toggle light/dark theme</div></div><div style="color:var(--gray-400);font-size:18px">›</div></div>
+        <div class="conv-item" onclick="showToast('🛡️ Privacy settings')"><div class="conv-avatar">🛡️</div><div class="conv-info"><div class="conv-name">Privacy & Safety</div><div class="conv-preview">Blocked users, data settings</div></div><div style="color:var(--gray-400);font-size:18px">›</div></div>
+        <div class="conv-item" style="color:var(--danger)" onclick="confirmLogout()"><div class="conv-avatar" style="background:#ffebee">🚪</div><div class="conv-info"><div class="conv-name" style="color:var(--danger)">Log Out</div></div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- VENDOR PROFILE -->
+<div class="screen hidden" id="screen-vendor-profile">
+  <div class="top-bar">
+    <button class="back-btn" onclick="showScreen('screen-vendor-main')">←</button>
+    <div class="top-bar-title">My Profile</div>
+    <button class="btn-icon" onclick="showToast('✏️ Edit profile')">✏️</button>
+  </div>
+  <div class="screen-body">
+    <div class="profile-hero">
+      <div class="profile-cover" style="background:linear-gradient(135deg,#2d1b69,#4a0e5e,#8B00FF)"></div>
+      <div class="profile-avatar-wrap"><div class="profile-avatar" style="font-size:36px">💼</div></div>
+    </div>
+    <div class="profile-body">
+      <div class="profile-name-row">
+        <div class="profile-name">Luxury Events by Adaeze</div>
+        <div class="tag-green">✅ Verified</div>
+      </div>
+      <div class="profile-role-badge">🌸 Decorator • Planner • Lagos</div>
+      <div class="profile-bio">Award-winning event decorator with 8+ years of experience. We specialise in weddings, owambes, and corporate events. Let us turn your vision into reality! ✨</div>
+      <div class="stats-row">
+        <div class="stat-card"><div class="stat-value">4.9⭐</div><div class="stat-label">Rating</div></div>
+        <div class="stat-card"><div class="stat-value">127</div><div class="stat-label">Reviews</div></div>
+        <div class="stat-card"><div class="stat-value">94%</div><div class="stat-label">Response Rate</div></div>
+      </div>
+      <div class="hr" style="margin:0 -20px 20px"></div>
+      <div class="section-title" style="padding:0;margin-bottom:12px">Portfolio 📸</div>
+      <div class="portfolio-grid">
+        <div class="portfolio-item" style="background:linear-gradient(135deg,#1a472a,#2d6a4f)">🌸</div>
+        <div class="portfolio-item" style="background:linear-gradient(135deg,#2d1b69,#4a0e5e)">💐</div>
+        <div class="portfolio-item" style="background:linear-gradient(135deg,#7b2d00,#c04a00)">✨</div>
+        <div class="portfolio-item" style="background:linear-gradient(135deg,#00416a,#003d6b)">🎊</div>
+        <div class="portfolio-item" style="background:linear-gradient(135deg,#1a3a1a,#2d5a2d)">🌷</div>
+        <div class="portfolio-item" style="background:linear-gradient(135deg,#3d1a00,#6b2d00)" onclick="showToast('+ Add more photos')">➕</div>
+      </div>
+      <div class="hr" style="margin:20px -20px"></div>
+      <div class="section-title" style="padding:0;margin-bottom:12px">Availability Calendar</div>
+      <div style="background:var(--gray-100);border-radius:var(--radius);padding:16px">
+        <div style="text-align:center;font-weight:700;margin-bottom:12px;font-family:var(--font-display)">March 2026</div>
+        <div style="display:grid;grid-template-columns:repeat(7,1fr);gap:2px;margin-bottom:8px">
+          <div style="text-align:center;font-size:10px;font-weight:700;color:var(--text-muted)">Su</div>
+          <div style="text-align:center;font-size:10px;font-weight:700;color:var(--text-muted)">Mo</div>
+          <div style="text-align:center;font-size:10px;font-weight:700;color:var(--text-muted)">Tu</div>
+          <div style="text-align:center;font-size:10px;font-weight:700;color:var(--text-muted)">We</div>
+          <div style="text-align:center;font-size:10px;font-weight:700;color:var(--text-muted)">Th</div>
+          <div style="text-align:center;font-size:10px;font-weight:700;color:var(--text-muted)">Fr</div>
+          <div style="text-align:center;font-size:10px;font-weight:700;color:var(--text-muted)">Sa</div>
+        </div>
+        <div class="calendar-grid" id="cal-grid"></div>
+        <div style="display:flex;gap:12px;margin-top:12px;font-size:11px">
+          <span style="display:flex;align-items:center;gap:4px"><span style="width:10px;height:10px;border-radius:50%;background:var(--green);display:inline-block"></span>Available</span>
+          <span style="display:flex;align-items:center;gap:4px"><span style="width:10px;height:10px;border-radius:50%;background:var(--danger);display:inline-block"></span>Booked</span>
+        </div>
+      </div>
+      <div class="hr" style="margin:20px -20px"></div>
+      <div class="section-title" style="padding:0;margin-bottom:12px">Verification</div>
+      <div style="background:var(--green-light);border-radius:var(--radius);padding:16px;display:flex;gap:12px;align-items:center">
+        <span style="font-size:32px">✅</span>
+        <div>
+          <div style="font-weight:700;font-size:14px;color:var(--green-dark)">Business Verified</div>
+          <div style="font-size:12px;color:var(--text-muted)">CAC Certificate & NIN uploaded and verified</div>
+        </div>
+      </div>
+      <div class="hr" style="margin:20px -20px"></div>
+      <div style="display:flex;flex-direction:column;gap:2px">
+        <div class="conv-item" onclick="showScreen('screen-premium')"><div class="conv-avatar">⭐</div><div class="conv-info"><div class="conv-name">Premium Plan</div><div class="conv-preview">Boost profile 3× – ₦2,999/month</div></div><div style="color:var(--gray-400);font-size:18px">›</div></div>
+        <div class="conv-item" onclick="showToast('🏦 Bank details & payout settings')"><div class="conv-avatar">🏦</div><div class="conv-info"><div class="conv-name">Bank Details & Payouts</div><div class="conv-preview">GTBank • •••• 4521</div></div><div style="color:var(--gray-400);font-size:18px">›</div></div>
+        <div class="conv-item" onclick="confirmLogout()"><div class="conv-avatar" style="background:#ffebee">🚪</div><div class="conv-info"><div class="conv-name" style="color:var(--danger)">Log Out</div></div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- NOTIFICATIONS -->
+<div class="screen hidden" id="screen-notifs">
+  <div class="top-bar">
+    <button class="back-btn" onclick="goBack()">←</button>
+    <div class="top-bar-title">Notifications 🔔</div>
+    <button class="btn-icon" onclick="showToast('✅ All marked as read')">✓</button>
+  </div>
+  <div class="screen-body">
+    <div class="notif-list">
+      <div class="notif-item unread" onclick="showScreen('screen-chat')">
+        <div class="notif-icon" style="background:#E8F7EE">💚</div>
+        <div>
+          <div class="notif-text"><strong>New Match!</strong> You matched with Luxury Events by Adaeze for your Traditional Wedding 🎉</div>
+          <div class="notif-time">2 minutes ago</div>
+        </div>
+      </div>
+      <div class="notif-item unread" onclick="showScreen('screen-chat')">
+        <div class="notif-icon">💬</div>
+        <div>
+          <div class="notif-text"><strong>TJ Photography</strong> sent you a price proposal for your birthday event</div>
+          <div class="notif-time">15 minutes ago</div>
+        </div>
+      </div>
+      <div class="notif-item unread">
+        <div class="notif-icon" style="background:#FFF8E1">⭐</div>
+        <div>
+          <div class="notif-text"><strong>DJ Splash</strong> super-liked your event request! "Chioma's 30th Birthday Owambe"</div>
+          <div class="notif-time">1 hour ago</div>
+        </div>
+      </div>
+      <div class="notif-item">
+        <div class="notif-icon" style="background:#FFEBEE">🔔</div>
+        <div>
+          <div class="notif-text"><strong>Reminder:</strong> Your event "Corporate Dinner Gala" is in 5 days. Confirm all vendor bookings!</div>
+          <div class="notif-time">3 hours ago</div>
+        </div>
+      </div>
+      <div class="notif-item">
+        <div class="notif-icon" style="background:#E3F2FD">💳</div>
+        <div>
+          <div class="notif-text"><strong>Payment Confirmed</strong> ₦255,000 deposit paid to Luxury Events by Adaeze. Ref: VSPAY-2984</div>
+          <div class="notif-time">Yesterday</div>
+        </div>
+      </div>
+      <div class="notif-item">
+        <div class="notif-icon" style="background:#F3E5F5">📝</div>
+        <div>
+          <div class="notif-text"><strong>New Review!</strong> Emeka J. rated your event 5 stars ⭐ "Best birthday party ever!"</div>
+          <div class="notif-time">2 days ago</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PREMIUM -->
+<div class="screen hidden" id="screen-premium">
+  <div class="top-bar">
+    <button class="back-btn" onclick="goBack()">←</button>
+    <div class="top-bar-title">Go Premium ⭐</div>
+  </div>
+  <div class="screen-body">
+    <div class="premium-header">
+      <div class="premium-badge">⭐ VendSwipe Premium</div>
+      <div class="premium-title">Unlock Your Full Potential</div>
+      <div class="premium-sub">Get more matches, more visibility, and grow your business faster across Nigeria 🇳🇬</div>
+    </div>
+    <div class="plan-cards">
+      <div class="plan-card">
+        <div class="plan-name">Monthly</div>
+        <div class="plan-price">₦2,999 <span>/ month</span></div>
+        <div class="plan-features">
+          <div class="plan-feature">Unlimited swipes (vs 20/day free)</div>
+          <div class="plan-feature">Boost profile 3× visibility</div>
+          <div class="plan-feature">Featured in top of feed</div>
+          <div class="plan-feature">Profile analytics & views</div>
+          <div class="plan-feature">Super likes: 5/day (vs 1/day)</div>
+          <div class="plan-feature">Read receipts in chat</div>
+        </div>
+        <button class="btn btn-outline" style="margin-top:16px" onclick="showPaystackModal('2999')">Subscribe Monthly</button>
+      </div>
+      <div class="plan-card recommended">
+        <div class="plan-recommend-badge">🔥 BEST VALUE</div>
+        <div class="plan-name">Annual</div>
+        <div class="plan-price">₦24,999 <span>/ year</span></div>
+        <div style="font-size:12px;color:var(--green);font-weight:700;margin-bottom:8px">Save ₦10,989 vs monthly!</div>
+        <div class="plan-features">
+          <div class="plan-feature">Everything in Monthly</div>
+          <div class="plan-feature">Priority customer support</div>
+          <div class="plan-feature">Early access to new features</div>
+          <div class="plan-feature">Verified badge priority</div>
+          <div class="plan-feature">Admin dashboard access</div>
+        </div>
+        <button class="btn btn-gold" style="margin-top:16px" onclick="showPaystackModal('24999')">Subscribe Annual 🏆</button>
+      </div>
+    </div>
+    <div class="p-20">
+      <div class="paystack-badge">
+        <span style="font-size:24px">🔒</span>
+        <div class="paystack-badge-text">All payments secured by <strong>Paystack</strong>. Cancel anytime from your profile settings.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MAP -->
+<div class="screen hidden" id="screen-map">
+  <div class="top-bar">
+    <button class="back-btn" onclick="goBack()">←</button>
+    <div class="top-bar-title">Map View 🗺️</div>
+    <button class="btn-icon" onclick="showToast('🔍 Filter by vendor type')">🔍</button>
+  </div>
+  <div class="search-bar">
+    <span>🔍</span>
+    <input placeholder="Search vendors near you...">
+    <span onclick="showToast('📍 Using your location')">📍</span>
+  </div>
+  <div class="map-placeholder" style="flex:1">
+    <div class="map-grid"></div>
+    <div class="map-pin" style="top:20%;left:35%;animation-delay:0s" onclick="openVendorFromMap('Luxury Events by Adaeze','🌸')">📍</div>
+    <div class="map-pin" style="top:40%;left:60%;animation-delay:0.5s" onclick="openVendorFromMap('TJ Photography','📸')">📍</div>
+    <div class="map-pin" style="top:55%;left:25%;animation-delay:1s" onclick="openVendorFromMap('DJ Splash','🎵')">📍</div>
+    <div class="map-pin" style="top:30%;left:70%;animation-delay:1.5s" onclick="openVendorFromMap('Mama Chukwu Catering','🍽️')">📍</div>
+    <div class="map-pin" style="top:65%;left:55%;animation-delay:0.3s" onclick="openVendorFromMap('Adanna MUA Studio','💄')">📍</div>
+    <div class="map-pin" style="top:15%;left:55%;animation-delay:0.8s" onclick="openVendorFromMap('Lagos Event Hall','🏛️')">📍</div>
+    <div style="position:absolute;bottom:24px;left:50%;transform:translateX(-50%);display:flex;gap:10px">
+      <button class="map-center-btn" onclick="showToast('📍 Centred on your location!')">📍 My Location</button>
+      <button class="map-center-btn" style="background:var(--gold);color:#1a0533" onclick="showToast('📋 List view')">≡ List</button>
+    </div>
+    <div style="position:absolute;top:12px;right:12px;background:rgba(0,0,0,0.5);padding:8px 12px;border-radius:var(--radius-sm);color:white;font-size:12px;font-weight:600">
+      6 vendors nearby
+    </div>
+  </div>
+</div>
+
+<!-- FILTERS -->
+<div class="screen hidden" id="screen-filters">
+  <div class="top-bar">
+    <button class="back-btn" onclick="showScreen('screen-main')">←</button>
+    <div class="top-bar-title">Filter Vendors</div>
+    <button class="btn-icon" onclick="showToast('🔄 Filters reset!')">Reset</button>
+  </div>
+  <div class="screen-body">
+    <div class="form-section">
+      <div class="form-group">
+        <label class="input-label">Location</label>
+        <select class="select-field">
+          <option>Lagos (All)</option><option>Lagos Island</option><option>Lagos Mainland</option>
+          <option>Victoria Island</option><option>Lekki</option><option>Ikeja</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="input-label">Search Radius</label>
+        <input type="range" min="5" max="200" value="50" style="width:100%;accent-color:var(--green)" oninput="this.nextElementSibling.textContent=this.value+'km'">
+        <div style="text-align:center;font-weight:700;color:var(--green)">50km</div>
+      </div>
+      <div class="form-group">
+        <label class="input-label">Vendor Category</label>
+        <div class="chips-select" id="filter-chips"></div>
+      </div>
+      <div class="form-group">
+        <label class="input-label">Price Range (₦)</label>
+        <div class="range-inputs">
+          <input type="text" class="input-field" placeholder="Min" value="50,000">
+          <div class="range-sep">–</div>
+          <input type="text" class="input-field" placeholder="Max" value="5,000,000">
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="input-label">Minimum Rating</label>
+        <div class="stars" id="filter-stars">
+          <span class="star" onclick="setFilterRating(1)">⭐</span>
+          <span class="star" onclick="setFilterRating(2)">⭐</span>
+          <span class="star" onclick="setFilterRating(3)">⭐</span>
+          <span class="star" onclick="setFilterRating(4)">⭐</span>
+          <span class="star" onclick="setFilterRating(5)">⭐</span>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="input-label">Availability</label>
+        <input type="date" class="input-field">
+      </div>
+      <div class="form-group">
+        <label class="input-label">Sort By</label>
+        <div class="chips-select">
+          <div class="sel-chip selected">⭐ Rating</div>
+          <div class="sel-chip">📍 Distance</div>
+          <div class="sel-chip">💰 Price</div>
+          <div class="sel-chip">🔥 Popular</div>
+        </div>
+      </div>
+      <button class="btn btn-primary" onclick="showScreen('screen-main');showToast('✅ Filters applied!')">Apply Filters</button>
+    </div>
+  </div>
+</div>
+
+<!-- MATCH CELEBRATION -->
+<div id="match-overlay" class="match-overlay" style="display:none">
+  <div class="confetti-container" id="confetti-container"></div>
+  <div class="match-title">It's a Match! 🎉</div>
+  <div class="match-sub">You and <strong id="match-name-display">Luxury Events by Adaeze</strong><br>are interested in each other!</div>
+  <div class="match-avatars">
+    <div class="match-avatar">👤</div>
+    <div class="match-heart">💚</div>
+    <div class="match-avatar" id="match-vendor-avatar">🌸</div>
+  </div>
+  <button class="btn btn-primary" style="max-width:280px" onclick="closeMatchAndChat()">Send Message 💬</button>
+  <button class="btn btn-secondary" style="max-width:280px;margin-top:8px" onclick="closeMatch()">Keep Swiping</button>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<!-- PAYSTACK MODAL -->
+<div id="paystack-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.6);z-index:2000;display:none;align-items:flex-end">
+  <div style="background:var(--white);border-radius:var(--radius-xl) var(--radius-xl) 0 0;padding:24px;width:100%;max-width:480px;margin:0 auto;animation:slideUp 0.3s ease">
+    <div style="width:36px;height:4px;background:var(--gray-200);border-radius:2px;margin:0 auto 20px"></div>
+    <div style="font-family:var(--font-display);font-size:20px;font-weight:800;margin-bottom:4px">Complete Payment</div>
+    <div style="font-size:13px;color:var(--text-muted);margin-bottom:20px">Test mode – use card 4084 0840 8408 4081</div>
+    <div style="display:flex;flex-direction:column;gap:12px;margin-bottom:20px">
+      <div class="form-group">
+        <label class="input-label">Card Number</label>
+        <input type="text" class="input-field" placeholder="4084 0840 8408 4081" value="4084 0840 8408 4081">
+      </div>
+      <div style="display:flex;gap:10px">
+        <div class="form-group" style="flex:1">
+          <label class="input-label">Expiry</label>
+          <input type="text" class="input-field" placeholder="MM/YY" value="01/28">
+        </div>
+        <div class="form-group" style="flex:1">
+          <label class="input-label">CVV</label>
+          <input type="text" class="input-field" placeholder="000" value="000">
+        </div>
+      </div>
+    </div>
+    <div class="paystack-badge" style="margin-bottom:16px">
+      <span>🔒</span>
+      <div class="paystack-badge-text">Powered by <strong>Paystack</strong> – Nigeria's most trusted payment gateway</div>
+    </div>
+    <button class="btn btn-primary" id="pay-amount-btn" onclick="processPaystackPayment()">Pay ₦0 →</button>
+    <button class="btn btn-secondary" style="margin-top:10px" onclick="closePaystackModal()">Cancel</button>
+  </div>
+</div>
+
+<script>
+// ===== STATE =====
+const state = {
+  role: null,
+  phone: '',
+  name: 'Chioma',
+  city: 'Lagos',
+  currentScreen: 'screen-splash',
+  previousScreen: null,
+  cardIndex: 0,
+  vendorCardIndex: 0,
+  swipeCount: 0,
+  currentChat: null,
+  theme: 'light',
+  matchName: '',
+  matchEmoji: ''
+};
+
+// ===== DATA =====
+const VENDOR_CATEGORIES = [
+  'Wedding Planner 💒','Photographer 📸','Videographer 🎬','DJ/Live Band 🎵',
+  'Caterer 🍽️','Small Chops Vendor 🥘','Cake Baker 🎂','Decorator/Stylist 🌸',
+  'Makeup Artist 💄','MC/Hype Man 🎤','Ushering Team 👗','Venue/Hall 🏛️',
+  'Car Rental 🚗','Security 🛡️','Bartender/Cocktail 🍹','Dancer/Entertainer 💃',
+  'Projector & Lighting 💡','Souvenirs/Gifts 🎁'
+];
+
+const VENDOR_CARDS = [
+  { id:1, name:'Luxury Events by Adaeze', emoji:'🌸', categories:['Decorator/Stylist 🌸','Wedding Planner 💒'], rating:4.9, reviews:127, price:'from ₦350,000', city:'Lagos', distance:'3.2 km', verified:true, bio:'Award-winning event decorator with 8+ years of experience creating magical moments.', pricing:['Basic Decor: ₦350,000','Full Wedding Package: ₦850,000','Corporate Setup: ₦500,000'] },
+  { id:2, name:'TJ Photography', emoji:'📸', categories:['Photographer 📸','Videographer 🎬'], rating:4.8, reviews:89, price:'from ₦150,000', city:'Lagos', distance:'5.1 km', verified:true, bio:'Lagos\'s most sought-after wedding & event photographer. Over 500 events captured.', pricing:['Event Photography: ₦150,000','Full Day Coverage: ₦280,000','Photo + Video Bundle: ₦450,000'] },
+  { id:3, name:'DJ Splash', emoji:'🎵', categories:['DJ/Live Band 🎵','MC/Hype Man 🎤'], rating:4.7, reviews:213, price:'from ₦80,000', city:'Lagos', distance:'7.8 km', verified:false, bio:'Lagos #1 DJ for owambes and weddings. Professional sound system & lighting included.', pricing:['3hr DJ Set: ₦80,000','Full Night (8hr): ₦180,000','DJ + MC Package: ₦250,000'] },
+  { id:4, name:'Mama Chukwu Catering', emoji:'🍽️', categories:['Caterer 🍽️','Small Chops Vendor 🥘'], rating:4.9, reviews:342, price:'from ₦500/plate', city:'Lagos', distance:'2.4 km', verified:true, bio:'Authentic Nigerian cuisine for all occasions. We feed from 50 to 5000 guests!', pricing:['Buffet (per head): ₦2,500','Small Chops (50pax): ₦85,000','Full Catering 200pax: ₦500,000'] },
+  { id:5, name:'Adanna MUA Studio', emoji:'💄', categories:['Makeup Artist 💄'], rating:4.8, reviews:156, price:'from ₦25,000', city:'Lagos', distance:'4.3 km', verified:true, bio:'Transforming faces and boosting confidence for Nigeria\'s most beautiful brides.', pricing:['Bridal Glam: ₦45,000','Full Bridal (HD): ₦75,000','Aso-Ebi Group Discount: -20%'] },
+  { id:6, name:'Grand Ballroom Victoria Island', emoji:'🏛️', categories:['Venue/Hall 🏛️'], rating:4.6, reviews:67, price:'from ₦800,000', city:'Lagos', distance:'12.1 km', verified:true, bio:'Luxurious 1500-capacity ballroom on Victoria Island. State-of-the-art facilities.', pricing:['Weekday Hire: ₦800,000','Weekend (10hr): ₦1,500,000','Full Weekend Package: ₦2,200,000'] },
+  { id:7, name:'Sweet Layers Cake Studio', emoji:'🎂', categories:['Cake Baker 🎂'], rating:4.9, reviews:201, price:'from ₦35,000', city:'Abuja', distance:'1.2 km', verified:true, bio:'Custom cakes for every occasion. Wedding cakes, birthday cakes, and more!', pricing:['Birthday Cake (2-tier): ₦35,000','Wedding Cake (4-tier): ₦120,000','Cupcake Tower (100pc): ₦65,000'] },
+  { id:8, name:'PH Royal Caterers', emoji:'🥘', categories:['Caterer 🍽️','Bartender/Cocktail 🍹'], rating:4.7, reviews:178, price:'from ₦1,800/plate', city:'Port Harcourt', distance:'3.7 km', verified:true, bio:'Premium catering services for corporate and social events in Port Harcourt.', pricing:['Corporate Lunch: ₦1,800/plate','Cocktail Bar (4hr): ₦150,000','Full Event Catering: ₦400,000+'] },
+  { id:9, name:'Abuja Car Rentals & Luxury', emoji:'🚗', categories:['Car Rental 🚗'], rating:4.5, reviews:45, price:'from ₦50,000', city:'Abuja', distance:'8.9 km', verified:false, bio:'Premium car hire for weddings and events. Mercedes, Range Rover, and more.', pricing:['Sedan (8hr): ₦50,000','SUV Wedding Car: ₦120,000','Convoy (3 cars): ₦300,000'] },
+  { id:10, name:'Sparkle Event Ushers', emoji:'👗', categories:['Ushering Team 👗','Security 🛡️'], rating:4.6, reviews:89, price:'from ₦15,000/person', city:'Lagos', distance:'6.2 km', verified:true, bio:'Professional ushers and event security for weddings, corporates, and more.', pricing:['Usher (8hr): ₦15,000','Security (per head): ₦20,000','Full Team (10pax): ₦180,000'] }
+];
+
+const EVENT_CARDS = [
+  { id:1, title:"Chioma's 30th Birthday Owambe 🎂", type:'🎂 Birthday/Owambe', date:'March 15, 2026', guests:'200–500', budget:'₦500k – ₦1.5M', city:'Lagos', client:'Chioma O.', emoji:'👤', brief:'Dream birthday party with Afrobeats vibes, amazing food, and stunning decor.' },
+  { id:2, title:'Emeka & Amaka Traditional Wedding', type:'👘 Traditional Wedding', date:'April 5, 2026', guests:'500–1000', budget:'₦1.5M – ₦5M', city:'Enugu', client:'Emeka J.', emoji:'🤵', brief:'Grand Igbo traditional wedding. Need full catering, decor, photography, and entertainment.' },
+  { id:3, title:'Sterling Bank Q1 Corporate Dinner', type:'🏢 Corporate Event', date:'March 28, 2026', guests:'100–200', budget:'₦800k – ₦2M', city:'Lagos', client:'Sterling Bank', emoji:'🏢', brief:'Formal corporate dinner for 150 executives. Black tie. Premium catering required.' },
+  { id:4, title:'Baby Naming for Baby Adaeze 👶', type:'👶 Baby Naming', date:'March 20, 2026', guests:'Under 50', budget:'₦100k – ₦300k', city:'Abuja', client:'Ngozi A.', emoji:'👩', brief:'Intimate baby naming ceremony. Traditional Igbo theme. Small chops and cake needed.' },
+  { id:5, title:'Uche & Bimbo White Wedding 💒', type:'💒 White Wedding', date:'May 10, 2026', guests:'200–500', budget:'₦2M – ₦8M', city:'Lagos', client:'Uche O.', emoji:'💍', brief:'Dream white wedding. Need full vendor team: photographer, DJ, decor, MUA, caterer, MC.' }
+];
+
+const SAMPLE_EVENTS = [
+  { title:"Chioma's 30th Birthday Owambe 🎂", type:'Birthday/Owambe', date:'March 15, 2026', guests:'200–500', budgetMin:'500,000', budgetMax:'1,500,000', city:'Lagos', vendors:['DJ/Live Band 🎵','Caterer 🍽️','Decorator/Stylist 🌸','Photographer 📸'], status:'active' },
+  { title:'Corporate Dinner Gala', type:'Corporate Event', date:'March 28, 2026', guests:'100–200', budgetMin:'800,000', budgetMax:'2,000,000', city:'Lagos', vendors:['Caterer 🍽️','Decorator/Stylist 🌸','MC/Hype Man 🎤'], status:'active' }
+];
+
+const MATCHES = [
+  { name:'Luxury Events', emoji:'🌸', lastMsg:'Here\'s the proposal I mentioned...', time:'2m', unread:2 },
+  { name:'TJ Photography', emoji:'📸', lastMsg:'Can we schedule a call?', time:'1h', unread:1 },
+  { name:'DJ Splash', emoji:'🎵', lastMsg:'Available for March 15 👍', time:'3h', unread:0 },
+  { name:'Mama Chukwu', emoji:'🍽️', lastMsg:'Menu options attached!', time:'Yesterday', unread:0 },
+  { name:'Adanna MUA', emoji:'💄', lastMsg:'Yes I do group bookings!', time:'2d', unread:0 }
+];
+
+// ===== INIT =====
+document.addEventListener('DOMContentLoaded', () => {
+  setTimeout(() => { showScreen('screen-role'); }, 2200);
+  buildVendorCategoryChips();
+  buildEventVendorChips();
+  buildFilterChips();
+  buildCalendar();
+  renderVendorCards();
+  renderEventCards();
+  renderEvents();
+  renderMatches();
+  renderConvs();
+  renderVendorMatches();
+  renderVendorConvs();
+  // Set today date
+  const today = new Date();
+  const minDate = today.toISOString().split('T')[0];
+  document.querySelectorAll('input[type="date"]').forEach(el => el.min = minDate);
+});
+
+// ===== SCREEN NAVIGATION =====
+function showScreen(id) {
+  const prev = document.getElementById(state.currentScreen);
+  const next = document.getElementById(id);
+  if (!next || id === state.currentScreen) return;
+  state.previousScreen = state.currentScreen;
+  prev?.classList.add('hidden');
+  next.classList.remove('hidden');
+  state.currentScreen = id;
+}
+
+function goBack() {
+  if (state.previousScreen) showScreen(state.previousScreen);
+}
+
+function goBackFromChat() {
+  const isVendor = state.role === 'vendor';
+  showScreen(isVendor ? 'screen-vendor-main' : 'screen-main');
+}
+
+// ===== ROLE SELECTION =====
+function selectRole(role) {
+  state.role = role;
+  document.querySelectorAll('.role-card').forEach(c => c.classList.remove('selected'));
+  document.getElementById('role-' + role).classList.add('selected');
+  document.getElementById('role-next-btn').disabled = false;
+  // Show vendor extras in setup
+  const vendorExtra = document.getElementById('setup-vendor-extra');
+  if (vendorExtra) vendorExtra.style.display = role === 'vendor' ? 'block' : 'none';
+}
+
+function goToPhone() {
+  if (!state.role) return;
+  showScreen('screen-phone');
+}
+
+// ===== PHONE & OTP =====
+function validatePhone() {
+  const val = document.getElementById('phone-input').value;
+  document.getElementById('send-otp-btn').disabled = val.length < 10;
+}
+
+function sendOTP() {
+  const phone = document.getElementById('phone-input').value;
+  state.phone = '+234' + phone;
+  document.getElementById('otp-sub').innerHTML = `We sent a 6-digit code to <strong>${state.phone}</strong>`;
+  showScreen('screen-otp');
+  showToast('📱 OTP sent! (Use 123456 for demo)');
+}
+
+function otpInput(el, idx) {
+  const inputs = document.querySelectorAll('.otp-input');
+  const val = el.value.toString().slice(-1);
+  el.value = val;
+  if (val) { el.classList.add('filled'); if (idx < 5) inputs[idx+1].focus(); }
+  else el.classList.remove('filled');
+  const code = Array.from(inputs).map(i => i.value).join('');
+  document.getElementById('verify-btn').disabled = code.length < 6;
+}
+
+function verifyOTP() {
+  const inputs = document.querySelectorAll('.otp-input');
+  const code = Array.from(inputs).map(i => i.value).join('');
+  if (code === '123456') {
+    showToast('✅ Phone verified!');
+    if (state.role === 'vendor') {
+      document.getElementById('setup-vendor-extra').style.display = 'block';
+      document.getElementById('setup-sub').textContent = "Tell clients about your amazing services!";
+    }
+    showScreen('screen-setup');
+  } else {
+    showToast('❌ Wrong OTP. Use 123456 for demo.');
+  }
+}
+
+// ===== SETUP =====
+function buildVendorCategoryChips() {
+  const el = document.getElementById('cat-chips');
+  if (!el) return;
+  el.innerHTML = VENDOR_CATEGORIES.map(c =>
+    `<div class="sel-chip" onclick="this.classList.toggle('selected')">${c}</div>`
+  ).join('');
+}
+
+function buildEventVendorChips() {
+  const el = document.getElementById('ev-vendor-chips');
+  if (!el) return;
+  el.innerHTML = VENDOR_CATEGORIES.map(c =>
+    `<div class="sel-chip" onclick="this.classList.toggle('selected')">${c}</div>`
+  ).join('');
+}
+
+function buildFilterChips() {
+  const el = document.getElementById('filter-chips');
+  if (!el) return;
+  el.innerHTML = VENDOR_CATEGORIES.map(c =>
+    `<div class="sel-chip" onclick="this.classList.toggle('selected')">${c}</div>`
+  ).join('');
+}
+
+function completeSetup() {
+  const name = document.getElementById('setup-name').value || 'User';
+  const city = document.getElementById('setup-city').value || 'Lagos';
+  state.name = name.split(' ')[0];
+  state.city = city;
+  document.getElementById('main-greeting').textContent = `Hey ${state.name}!`;
+  document.getElementById('vendor-greeting').textContent = document.getElementById('setup-biz')?.value || `${state.name}'s Services`;
+  document.getElementById('profile-name').textContent = name;
+  showToast('🎉 Profile created! Welcome to VendSwipe NG!');
+  setTimeout(() => { showScreen(state.role === 'vendor' ? 'screen-vendor-main' : 'screen-main'); }, 400);
+}
+
+// ===== TAB SWITCHING =====
+function switchMainTab(tab) {
+  document.getElementById('main-swipe-tab').style.display = 'none';
+  document.getElementById('main-events-tab').style.display = 'none';
+  document.getElementById('main-matches-tab').style.display = 'none';
+  document.getElementById('tab-swipe').classList.remove('active');
+  document.getElementById('tab-events').classList.remove('active');
+  document.getElementById('tab-matches').classList.remove('active');
+  if (tab === 'swipe') { document.getElementById('main-swipe-tab').style.display = 'flex'; document.getElementById('tab-swipe').classList.add('active'); }
+  else if (tab === 'events') { document.getElementById('main-events-tab').style.display = 'block'; document.getElementById('tab-events').classList.add('active'); }
+  else { document.getElementById('main-matches-tab').style.display = 'block'; document.getElementById('tab-matches').classList.add('active'); }
+}
+
+function switchVendorTab(tab) {
+  document.getElementById('vendor-swipe-tab').style.display = 'none';
+  document.getElementById('vendor-matches-tab').style.display = 'none';
+  document.getElementById('vendor-analytics-tab').style.display = 'none';
+  document.getElementById('vtab-swipe').classList.remove('active');
+  document.getElementById('vtab-matches').classList.remove('active');
+  document.getElementById('vtab-analytics').classList.remove('active');
+  if (tab === 'swipe') { document.getElementById('vendor-swipe-tab').style.display = 'flex'; document.getElementById('vtab-swipe').classList.add('active'); }
+  else if (tab === 'matches') { document.getElementById('vendor-matches-tab').style.display = 'block'; document.getElementById('vtab-matches').classList.add('active'); }
+  else { document.getElementById('vendor-analytics-tab').style.display = 'block'; document.getElementById('vtab-analytics').classList.add('active'); }
+}
+
+function filterTap(el) {
+  el.classList.toggle('active');
+}
+
+// ===== CARD RENDERING =====
+function renderVendorCards() {
+  const stack = document.getElementById('card-stack');
+  if (!stack) return;
+  stack.innerHTML = '';
+  const visible = VENDOR_CARDS.slice(state.cardIndex, state.cardIndex + 3);
+  if (visible.length === 0) {
+    stack.innerHTML = `<div class="empty-state"><div class="empty-emoji">😔</div><div class="empty-title">No more vendors nearby</div><div class="empty-sub">Try expanding your search radius or removing some filters. New vendors join every day!</div><button class="btn btn-outline btn-sm" onclick="state.cardIndex=0;renderVendorCards();showToast('🔄 Feed refreshed!')">Expand Radius</button></div>`;
+    return;
+  }
+  visible.reverse().forEach((v, ri) => {
+    const i = visible.length - 1 - ri;
+    const card = document.createElement('div');
+    card.className = 'swipe-card' + (i === visible.length - 1 ? ' top' : '');
+    card.id = 'card-' + v.id;
+    card.dataset.vendor = JSON.stringify(v);
+    card.innerHTML = `
+      <div class="card-photo-bg">${v.emoji}</div>
+      <div class="card-photo-gradient"></div>
+      <div class="like-indicator" id="like-${v.id}">LIKE 💚</div>
+      <div class="nope-indicator" id="nope-${v.id}">NOPE ✗</div>
+      <div class="super-indicator" id="super-${v.id}">SUPER ⭐</div>
+      <div class="card-info">
+        <div class="card-name-row">
+          <div class="card-name">${v.name} ${v.verified ? '<span class="card-verified">✅</span>' : ''}</div>
+          <div class="card-rating">⭐ ${v.rating} <span style="color:var(--gray-400)">(${v.reviews})</span></div>
+        </div>
+        <div class="card-meta">📍 ${v.city} · ${v.distance}</div>
+        <div class="card-tags">${v.categories.map(c => `<span class="card-tag">${c}</span>`).join('')}</div>
+        <div class="card-price-row">
+          <div class="card-price naira">${v.price}</div>
+          <button style="background:none;border:1.5px solid var(--green);border-radius:20px;padding:6px 14px;color:var(--green);font-size:12px;font-weight:700;cursor:pointer" onclick="openVendorDetail(event, this.closest('.swipe-card').dataset.vendor)">View Profile →</button>
+        </div>
+      </div>`;
+    addSwipeListeners(card, v, false);
+    stack.appendChild(card);
+  });
+}
+
+function renderEventCards() {
+  const stack = document.getElementById('vendor-card-stack');
+  if (!stack) return;
+  stack.innerHTML = '';
+  const visible = EVENT_CARDS.slice(state.vendorCardIndex, state.vendorCardIndex + 3);
+  if (visible.length === 0) {
+    stack.innerHTML = `<div class="empty-state"><div class="empty-emoji">📋</div><div class="empty-title">No new events nearby</div><div class="empty-sub">Expand your service area or update your categories to see more events.</div><button class="btn btn-outline btn-sm" onclick="state.vendorCardIndex=0;renderEventCards()">Refresh Feed 🔄</button></div>`;
+    return;
+  }
+  visible.reverse().forEach((ev, ri) => {
+    const i = visible.length - 1 - ri;
+    const card = document.createElement('div');
+    card.className = 'swipe-card' + (i === visible.length - 1 ? ' top' : '');
+    card.id = 'ev-card-' + ev.id;
+    card.dataset.event = JSON.stringify(ev);
+    card.innerHTML = `
+      <div class="card-photo-bg" style="background:linear-gradient(160deg,#1a0533,#4a0e5e,#8B00FF);aspect-ratio:3/3.5">
+        <div style="text-align:center;padding:20px">
+          <div style="font-size:14px;font-weight:600;color:rgba(255,255,255,0.7);margin-bottom:6px">${ev.type}</div>
+          <div style="font-family:var(--font-display);font-size:22px;font-weight:800;color:white;line-height:1.2;margin-bottom:16px">${ev.title}</div>
+          <div style="display:flex;align-items:center;gap:8px;justify-content:center;margin-bottom:8px">
+            <div style="width:44px;height:44px;border-radius:50%;background:rgba(255,255,255,0.2);display:flex;align-items:center;justify-content:center;font-size:20px">${ev.emoji}</div>
+            <div style="color:rgba(255,255,255,0.8);font-size:13px">${ev.client}</div>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:16px;text-align:left">
+            <div style="background:rgba(255,255,255,0.1);border-radius:10px;padding:10px"><div style="font-size:10px;color:rgba(255,255,255,0.6)">DATE</div><div style="font-size:13px;font-weight:700;color:white">${ev.date}</div></div>
+            <div style="background:rgba(255,255,255,0.1);border-radius:10px;padding:10px"><div style="font-size:10px;color:rgba(255,255,255,0.6)">LOCATION</div><div style="font-size:13px;font-weight:700;color:white">${ev.city}</div></div>
+            <div style="background:rgba(255,255,255,0.1);border-radius:10px;padding:10px"><div style="font-size:10px;color:rgba(255,255,255,0.6)">GUESTS</div><div style="font-size:13px;font-weight:700;color:white">${ev.guests}</div></div>
+            <div style="background:rgba(255,255,255,0.1);border-radius:10px;padding:10px"><div style="font-size:10px;color:rgba(255,255,255,0.6)">BUDGET</div><div style="font-size:12px;font-weight:700;color:var(--gold)">${ev.budget}</div></div>
+          </div>
+          <div style="margin-top:14px;background:rgba(255,255,255,0.1);border-radius:10px;padding:10px;text-align:left"><div style="font-size:10px;color:rgba(255,255,255,0.6);margin-bottom:4px">BRIEF</div><div style="font-size:12px;color:rgba(255,255,255,0.8);line-height:1.5">${ev.brief}</div></div>
+        </div>
+      </div>
+      <div class="like-indicator">INTERESTED 💚</div>
+      <div class="nope-indicator">SKIP ✗</div>
+      <div class="card-info" style="padding:14px 20px">
+        <div style="display:flex;gap:6px;flex-wrap:wrap">
+          <span class="tag-green">📍 ${ev.city}</span>
+          <span class="tag-gold">💰 ${ev.budget}</span>
+          <span class="tag-green">👥 ${ev.guests} guests</span>
+        </div>
+      </div>`;
+    addSwipeListeners(card, ev, true);
+    stack.appendChild(card);
+  });
+}
+
+// ===== SWIPE MECHANICS =====
+function addSwipeListeners(card, data, isEvent) {
+  let startX, startY, currentX = 0, isDragging = false;
+  const onStart = (e) => {
+    isDragging = true;
+    const pt = e.touches ? e.touches[0] : e;
+    startX = pt.clientX; startY = pt.clientY;
+    card.style.transition = 'none';
+  };
+  const onMove = (e) => {
+    if (!isDragging) return;
+    const pt = e.touches ? e.touches[0] : e;
+    currentX = pt.clientX - startX;
+    const currentY = pt.clientY - startY;
+    const rotate = currentX * 0.08;
+    card.style.transform = `translate(${currentX}px, ${currentY * 0.3}px) rotate(${rotate}deg)`;
+    const likeEl = card.querySelector('.like-indicator');
+    const nopeEl = card.querySelector('.nope-indicator');
+    const superEl = card.querySelector('.super-indicator');
+    if (likeEl) likeEl.style.opacity = Math.max(0, currentX / 80);
+    if (nopeEl) nopeEl.style.opacity = Math.max(0, -currentX / 80);
+    if (superEl) superEl.style.opacity = Math.max(0, -currentY / 80);
+    e.preventDefault();
+  };
+  const onEnd = () => {
+    if (!isDragging) return;
+    isDragging = false;
+    card.style.transition = '';
+    if (currentX > 80) { animateSwipe(card, data, 'right', isEvent); }
+    else if (currentX < -80) { animateSwipe(card, data, 'left', isEvent); }
+    else { card.style.transform = ''; const l=card.querySelector('.like-indicator'),n=card.querySelector('.nope-indicator'),s=card.querySelector('.super-indicator'); if(l)l.style.opacity=0; if(n)n.style.opacity=0; if(s)s.style.opacity=0; }
+    currentX = 0;
+  };
+  card.addEventListener('mousedown', onStart); document.addEventListener('mousemove', onMove); document.addEventListener('mouseup', onEnd);
+  card.addEventListener('touchstart', onStart, {passive:false}); card.addEventListener('touchmove', onMove, {passive:false}); card.addEventListener('touchend', onEnd);
+}
+
+function animateSwipe(card, data, dir, isEvent) {
+  const cls = dir === 'right' ? 'animate-right' : dir === 'left' ? 'animate-left' : 'animate-up';
+  card.classList.add(cls);
+  setTimeout(() => {
+    card.remove();
+    if (isEvent) { state.vendorCardIndex++; renderEventCards(); }
+    else { state.cardIndex++; renderVendorCards(); }
+    if (dir === 'right') {
+      state.swipeCount++;
+      const matchChance = Math.random() > 0.4;
+      if (matchChance) {
+        state.matchName = data.name || data.title;
+        state.matchEmoji = data.emoji || '🎉';
+        showMatchOverlay();
+      } else {
+        showToast(`👍 "Knock" sent to ${data.name || data.title}!`);
+      }
+    } else if (dir === 'up') {
+      state.matchName = data.name || data.title;
+      state.matchEmoji = data.emoji || '⭐';
+      showMatchOverlay();
+    } else {
+      showToast('👋 Passed');
+    }
+  }, 380);
+}
+
+function swipeCard(dir) {
+  const top = document.querySelector('#card-stack .top');
+  if (!top) return;
+  const data = JSON.parse(top.dataset.vendor || '{}');
+  animateSwipe(top, data, dir, false);
+}
+
+function swipeVendorCard(dir) {
+  const top = document.querySelector('#vendor-card-stack .top');
+  if (!top) return;
+  const data = JSON.parse(top.dataset.event || '{}');
+  animateSwipe(top, data, dir, true);
+}
+
+function rewindCard() { showToast('↩️ Rewound! (Premium feature)'); showScreen('screen-premium'); }
+
+// ===== MATCH OVERLAY =====
+function showMatchOverlay() {
+  const overlay = document.getElementById('match-overlay');
+  document.getElementById('match-name-display').textContent = state.matchName;
+  document.getElementById('match-vendor-avatar').textContent = state.matchEmoji;
+  overlay.style.display = 'flex';
+  spawnConfetti();
+  renderMatches(); renderConvs(); renderVendorMatches(); renderVendorConvs();
+}
+
+function closeMatch() { document.getElementById('match-overlay').style.display = 'none'; }
+
+function closeMatchAndChat() {
+  closeMatch();
+  document.getElementById('chat-name').textContent = state.matchName;
+  document.getElementById('chat-avatar').textContent = state.matchEmoji;
+  showScreen('screen-chat');
+}
+
+function spawnConfetti() {
+  const container = document.getElementById('confetti-container');
+  container.innerHTML = '';
+  const colors = ['#00A550','#FFD700','#FF6B35','#ffffff','#00C851','#FF4444'];
+  for (let i = 0; i < 80; i++) {
+    const el = document.createElement('div');
+    el.className = 'confetti';
+    el.style.cssText = `left:${Math.random()*100}%;background:${colors[Math.floor(Math.random()*colors.length)]};animation-duration:${2+Math.random()*2}s;animation-delay:${Math.random()*1}s;width:${6+Math.random()*8}px;height:${6+Math.random()*8}px;border-radius:${Math.random()>0.5?'50%':'2px'}`;
+    container.appendChild(el);
+  }
+}
+
+// ===== MATCHES & CONVS =====
+function renderMatches() {
+  const el = document.getElementById('matches-row');
+  if (!el) return;
+  el.innerHTML = MATCHES.slice(0,5).map(m => `
+    <div class="match-bubble" onclick="openChat('${m.name}','${m.emoji}')">
+      <div class="match-avatar">${m.emoji}<div class="online-dot"></div></div>
+      <div class="match-name">${m.name}</div>
+    </div>`).join('');
+}
+
+function renderConvs() {
+  const el = document.getElementById('conv-list');
+  if (!el) return;
+  el.innerHTML = MATCHES.map(m => `
+    <div class="conv-item" onclick="openChat('${m.name}','${m.emoji}')">
+      <div class="conv-avatar">${m.emoji}</div>
+      <div class="conv-info"><div class="conv-name">${m.name}</div><div class="conv-preview">${m.lastMsg}</div></div>
+      <div class="conv-meta"><div class="conv-time">${m.time}</div>${m.unread ? `<div class="conv-unread">${m.unread}</div>` : ''}</div>
+    </div>`).join('');
+}
+
+function renderVendorMatches() {
+  const el = document.getElementById('vendor-matches-row');
+  if (!el) return;
+  const vMatches = [
+    {name:"Chioma's Party",emoji:'🎂'},{name:'Emeka Wedding',emoji:'💒'},{name:'Sterling Bank',emoji:'🏢'},{name:'Baby Adaeze',emoji:'👶'}
+  ];
+  el.innerHTML = vMatches.map(m => `
+    <div class="match-bubble" onclick="openChat('${m.name}','${m.emoji}')">
+      <div class="match-avatar">${m.emoji}<div class="online-dot"></div></div>
+      <div class="match-name">${m.name}</div>
+    </div>`).join('');
+}
+
+function renderVendorConvs() {
+  const el = document.getElementById('vendor-conv-list');
+  if (!el) return;
+  const vConvs = [
+    {name:"Chioma O.",emoji:'🎂',msg:'What\'s included in the basic package?',time:'5m',unread:2},
+    {name:'Emeka J.',emoji:'💒',msg:'Can you do Enugu?',time:'30m',unread:1},
+    {name:'Sterling Bank',emoji:'🏢',msg:'Proposal received, reviewing...',time:'2h',unread:0},
+  ];
+  el.innerHTML = vConvs.map(m => `
+    <div class="conv-item" onclick="openChat('${m.name}','${m.emoji}')">
+      <div class="conv-avatar">${m.emoji}</div>
+      <div class="conv-info"><div class="conv-name">${m.name}</div><div class="conv-preview">${m.msg}</div></div>
+      <div class="conv-meta"><div class="conv-time">${m.time}</div>${m.unread ? `<div class="conv-unread">${m.unread}</div>` : ''}</div>
+    </div>`).join('');
+}
+
+function openChat(name, emoji) {
+  document.getElementById('chat-name').textContent = name;
+  document.getElementById('chat-avatar').textContent = emoji;
+  showScreen('screen-chat');
+}
+
+// ===== EVENTS =====
+function renderEvents() {
+  const el = document.getElementById('events-list');
+  if (!el) return;
+  el.innerHTML = SAMPLE_EVENTS.map(ev => `
+    <div class="event-card">
+      <div class="event-card-header">
+        <div class="event-type-badge">${ev.type}</div>
+        <div class="event-title">${ev.title}</div>
+      </div>
+      <div class="event-card-body">
+        <div class="event-meta-grid">
+          <div class="event-meta-item"><div class="event-meta-icon">📅</div><div><div class="event-meta-text">Date</div><div class="event-meta-value">${ev.date}</div></div></div>
+          <div class="event-meta-item"><div class="event-meta-icon">📍</div><div><div class="event-meta-text">Location</div><div class="event-meta-value">${ev.city}</div></div></div>
+          <div class="event-meta-item"><div class="event-meta-icon">👥</div><div><div class="event-meta-text">Guests</div><div class="event-meta-value">${ev.guests}</div></div></div>
+          <div class="event-meta-item"><div class="event-meta-icon">💰</div><div><div class="event-meta-text">Budget</div><div class="event-meta-value naira">₦${ev.budgetMin}–${ev.budgetMax}</div></div></div>
+        </div>
+        <div style="margin-top:12px;display:flex;flex-wrap:wrap;gap:4px">${ev.vendors.map(v => `<span class="tag-green" style="font-size:10px">${v}</span>`).join('')}</div>
+      </div>
+      <div class="event-actions">
+        <button class="btn btn-secondary btn-sm" onclick="showToast('✏️ Edit event')">Edit</button>
+        <button class="btn btn-primary btn-sm" onclick="showToast('🔍 Viewing ${ev.vendors.length} matched vendors!')">View Matches</button>
+      </div>
+    </div>`).join('');
+}
+
+function createEvent() {
+  const title = document.getElementById('ev-title').value;
+  if (!title) { showToast('❌ Please enter an event title'); return; }
+  showToast('🚀 Event published! Vendors will start swiping on it!');
+  setTimeout(() => showScreen('screen-main'), 800);
+}
+
+// ===== VENDOR DETAIL =====
+function openVendorDetail(e, vendorJson) {
+  e.stopPropagation();
+  const v = typeof vendorJson === 'string' ? JSON.parse(vendorJson) : vendorJson;
+  document.getElementById('vendor-detail-name').textContent = v.name;
+  document.getElementById('vendor-detail-bio').textContent = v.bio;
+  document.getElementById('vendor-detail-cats').innerHTML = v.categories.map(c => `<span class="card-tag">${c}</span>`).join('');
+  document.getElementById('vendor-detail-pricing').innerHTML = (v.pricing||[]).map(p => `<div style="display:flex;align-items:center;gap:8px;padding:10px;background:var(--gray-100);border-radius:var(--radius-sm)"><span style="font-size:14px">💰</span><span style="font-size:14px;font-weight:500" class="naira">${p}</span></div>`).join('');
+  document.getElementById('vendor-detail-photo').textContent = v.emoji;
+  document.getElementById('book-vendor-name').textContent = v.name;
+  showScreen('screen-vendor-detail');
+}
+
+function openVendorFromMap(name, emoji) {
+  document.getElementById('vendor-detail-name').textContent = name;
+  document.getElementById('vendor-detail-photo').textContent = emoji;
+  document.getElementById('vendor-detail-bio').textContent = `Professional ${name} based in Lagos. Tap "View Profile" to see full details and book.`;
+  document.getElementById('vendor-detail-cats').innerHTML = '';
+  document.getElementById('vendor-detail-pricing').innerHTML = '';
+  showScreen('screen-vendor-detail');
+}
+
+// ===== CALENDAR =====
+function buildCalendar() {
+  const grid = document.getElementById('cal-grid');
+  if (!grid) return;
+  const booked = [3,7,14,15,21,28];
+  const available = [5,6,8,10,11,12,13,16,17,18,19,22,23,24,25,26];
+  for (let i = 1; i <= 31; i++) {
+    const d = document.createElement('div');
+    d.className = 'cal-day';
+    if (booked.includes(i)) d.classList.add('booked');
+    else if (available.includes(i)) d.classList.add('available');
+    if (i === 27) d.classList.add('today');
+    d.textContent = i;
+    d.onclick = () => showToast(booked.includes(i) ? '🔴 Booked' : available.includes(i) ? '🟢 Available' : 'Tap to mark');
+    grid.appendChild(d);
+  }
+}
+
+// ===== PAYMENT =====
+function selectPayMethod(el) {
+  document.querySelectorAll('.pay-method').forEach(e => e.classList.remove('selected'));
+  el.classList.add('selected');
+}
+
+function processPayment() { showPaystackModal('255000'); }
+
+function showPaystackModal(amount) {
+  const formatted = parseInt(amount).toLocaleString('en-NG');
+  document.getElementById('pay-amount-btn').textContent = `Pay ₦${formatted} →`;
+  document.getElementById('paystack-modal').style.display = 'flex';
+}
+
+function closePaystackModal() { document.getElementById('paystack-modal').style.display = 'none'; }
+
+function processPaystackPayment() {
+  closePaystackModal();
+  showToast('⏳ Processing payment...');
+  setTimeout(() => {
+    showToast('✅ Payment successful! Reference: VSPAY-' + Math.floor(Math.random()*9000+1000));
+    showScreen('screen-main');
+  }, 2000);
+}
+
+// ===== CHAT =====
+function sendMessage() {
+  const input = document.getElementById('chat-input');
+  const msg = input.value.trim();
+  if (!msg) return;
+  const msgs = document.getElementById('chat-messages');
+  const el = document.createElement('div');
+  el.className = 'msg sent slide-up';
+  el.innerHTML = `<div class="msg-bubble">${msg}</div><div class="msg-time">${new Date().toLocaleTimeString('en-NG',{hour:'2-digit',minute:'2-digit'})}</div>`;
+  msgs.appendChild(el);
+  msgs.scrollTop = msgs.scrollHeight;
+  input.value = '';
+  setTimeout(() => {
+    const responses = ['Thanks for reaching out! I\'ll get back to you shortly 😊','Sounds great! Let me check my availability 📅','Perfect! Here\'s what I can offer...','I\'d love to work on your event! 🎉','Let me send you a detailed proposal 📄'];
+    const replyEl = document.createElement('div');
+    replyEl.className = 'msg recv slide-up';
+    replyEl.innerHTML = `<div class="msg-bubble">${responses[Math.floor(Math.random()*responses.length)]}</div><div class="msg-time">${new Date().toLocaleTimeString('en-NG',{hour:'2-digit',minute:'2-digit'})}</div>`;
+    msgs.appendChild(replyEl);
+    msgs.scrollTop = msgs.scrollHeight;
+  }, 1500 + Math.random() * 1000);
+}
+
+// ===== MISC =====
+function toggleTheme() {
+  state.theme = state.theme === 'light' ? 'dark' : 'light';
+  document.documentElement.setAttribute('data-theme', state.theme);
+  document.querySelector('.theme-toggle').textContent = state.theme === 'dark' ? '☀️' : '🌙';
+  showToast(state.theme === 'dark' ? '🌙 Dark mode on' : '☀️ Light mode on');
+}
+
+function showToast(msg) {
+  const toast = document.getElementById('toast');
+  toast.textContent = msg;
+  toast.classList.add('show');
+  clearTimeout(toast._t);
+  toast._t = setTimeout(() => toast.classList.remove('show'), 2500);
+}
+
+function confirmLogout() {
+  if (confirm('Are you sure you want to log out?')) {
+    state.role = null; state.cardIndex = 0; state.vendorCardIndex = 0;
+    showScreen('screen-role');
+    showToast('👋 Logged out. See you soon!');
+  }
+}
+
+function setFilterRating(n) { showToast(`⭐ Minimum ${n} star${n>1?'s':''} selected`); }
+</script>
+</body>
+</html>

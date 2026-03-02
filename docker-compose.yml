@@ -1,0 +1,21 @@
+# ─────────────────────────────────────────────────────────────
+# VendSwipe NG — Docker Compose
+#
+# START:  docker-compose up
+# STOP:   docker-compose down
+# REBUILD after changes: docker-compose up --build
+# ─────────────────────────────────────────────────────────────
+
+version: '3.8'
+
+services:
+  vendswipe:
+    build: .
+    container_name: vendswipe-ng
+    ports:
+      - "8080:80"       # Access at http://localhost:8080
+    restart: unless-stopped
+    volumes:
+      # Hot-reload: mounts your local index.html into the container
+      # Remove this line in production (use the COPY in Dockerfile instead)
+      - ./index.html:/usr/share/nginx/html/index.html:ro

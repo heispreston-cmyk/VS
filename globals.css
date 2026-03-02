@@ -1,0 +1,1197 @@
+/* globals.css — EVENTually
+ * Includes: Tailwind directives, safe-area insets, WebView/Capacitor tweaks
+ */
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ── Google Fonts ─────────────────────────────────────────────────────────── */
+@import url("https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300&display=swap");
+
+/* ── Design Tokens ────────────────────────────────────────────────────────── */
+:root {
+  /* Colors */
+  --orange: #ff9500;
+  --orange-light: #ffb340;
+  --emerald: #06d6a0;
+  --purple: #a78bfa;
+  --navy: #0a0e1a;
+  --navy2: #0f1527;
+  --navy3: #161d35;
+  --navy4: #1e2842;
+  --surface: #1a2035;
+  --border: rgba(255, 255, 255, 0.08);
+  --text: #f8f9ff;
+  --text2: #9ba3be;
+  --text3: #6b7592;
+  --glass: rgba(255, 255, 255, 0.04);
+  --glass2: rgba(255, 255, 255, 0.07);
+
+  /* ── Safe Area Insets (Capacitor / PWA / notch phones) ─────────────────── */
+  /* These are set by the OS/WebView. We reference them via env() throughout. */
+  --sat: env(safe-area-inset-top, 0px);
+  --sar: env(safe-area-inset-right, 0px);
+  --sab: env(safe-area-inset-bottom, 0px);
+  --sal: env(safe-area-inset-left, 0px);
+
+  /* Typography */
+  --font-display: "Syne", system-ui, sans-serif;
+  --font-body: "DM Sans", system-ui, sans-serif;
+}
+
+/* Light mode overrides */
+.light-mode {
+  --navy: #f0f2ff;
+  --navy2: #e8ebff;
+  --navy3: #ffffff;
+  --navy4: #f5f7ff;
+  --surface: #ffffff;
+  --border: rgba(0, 0, 0, 0.08);
+  --text: #0a0e1a;
+  --text2: #4a5080;
+  --text3: #7a80a0;
+  --glass: rgba(0, 0, 0, 0.02);
+  --glass2: rgba(0, 0, 0, 0.04);
+}
+
+/* ── Reset & Base ─────────────────────────────────────────────────────────── */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  height: 100%;
+  /* Prevent text size adjustment on device rotation */
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+body {
+  height: 100%;
+  font-family: var(--font-body);
+  background: var(--navy);
+  color: var(--text);
+  /* Prevent overscroll bounce (iOS rubber-band) in the native WebView */
+  overscroll-behavior: none;
+  /* Smooth font rendering */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Disable long-press context menus on mobile (images, links) */
+img,
+a,
+button {
+  -webkit-touch-callout: none;
+}
+
+/* ── App Shell ────────────────────────────────────────────────────────────── */
+.app {
+  font-family: var(--font-body);
+  background: var(--navy);
+  color: var(--text);
+  height: 100vh;
+  /* Respect the notch/Dynamic Island on iOS */
+  height: calc(100vh - env(safe-area-inset-top));
+  display: flex;
+  flex-direction: column;
+  max-width: 430px;
+  margin: 0 auto;
+  position: relative;
+  overflow: hidden;
+  /* Pad top for status bar when running as a native app */
+  padding-top: env(safe-area-inset-top, 0px);
+}
+
+/* ── Scrollable Content Area ──────────────────────────────────────────────── */
+.scroll-area {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  scroll-behavior: smooth;
+  /* Extra bottom padding so content doesn't hide behind the bottom nav + home indicator */
+  padding-bottom: calc(80px + env(safe-area-inset-bottom, 0px));
+  /* Momentum scrolling on iOS (feels native) */
+  -webkit-overflow-scrolling: touch;
+}
+
+.scroll-area::-webkit-scrollbar {
+  display: none;
+}
+
+/* ── Header ───────────────────────────────────────────────────────────────── */
+.header {
+  padding: 16px 20px 12px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--navy);
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  border-bottom: 1px solid var(--border);
+}
+
+/* ── Logo ─────────────────────────────────────────────────────────────────── */
+.logo {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 22px;
+  background: linear-gradient(135deg, var(--orange) 0%, var(--orange-light) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  letter-spacing: -0.5px;
+}
+
+.logo span {
+  color: var(--emerald);
+  -webkit-text-fill-color: var(--emerald);
+}
+
+/* ── Bottom Navigation Bar ────────────────────────────────────────────────── */
+.bottom-nav {
+  display: flex;
+  align-items: center;
+  background: var(--navy2);
+  border-top: 1px solid var(--border);
+  position: sticky;
+  bottom: 0;
+  z-index: 50;
+  /* Critical: push nav content up above the iPhone Home Indicator
+     or Android gesture bar. Without this, the last nav item is unreachable. */
+  padding-bottom: env(safe-area-inset-bottom, 10px);
+  padding-top: 10px;
+}
+
+.nav-item {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  cursor: pointer;
+  padding: 6px 0;
+  background: none;
+  border: none;
+  color: var(--text3);
+  transition: color 0.2s;
+  font-size: 10px;
+  font-weight: 500;
+  font-family: var(--font-body);
+  /* Prevent double-tap zoom on nav buttons */
+  touch-action: manipulation;
+}
+
+.nav-item.active {
+  color: var(--orange);
+}
+
+.nav-item.active svg {
+  filter: drop-shadow(0 0 6px rgba(255, 149, 0, 0.5));
+}
+
+/* ── Hero ─────────────────────────────────────────────────────────────────── */
+.hero {
+  position: relative;
+  height: 280px;
+  overflow: hidden;
+}
+
+.hero-bg {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(180deg, rgba(10, 14, 26, 0) 0%, rgba(10, 14, 26, 0.5) 40%, var(--navy) 100%),
+    url("https://images.unsplash.com/photo-1600093463592-8e36ae95ef56?w=900&q=80")
+      center / cover;
+  animation: heroFade 0.6s ease;
+}
+
+@keyframes heroFade {
+  from {
+    opacity: 0;
+    transform: scale(1.05);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.hero-content {
+  position: absolute;
+  bottom: 20px;
+  left: 20px;
+  right: 20px;
+}
+
+.hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(255, 149, 0, 0.2);
+  border: 1px solid rgba(255, 149, 0, 0.3);
+  color: var(--orange-light);
+  font-size: 11px;
+  font-weight: 600;
+  padding: 4px 10px;
+  border-radius: 100px;
+  margin-bottom: 8px;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+
+.hero-title {
+  font-family: var(--font-display);
+  font-size: 26px;
+  font-weight: 800;
+  line-height: 1.2;
+  color: white;
+  margin-bottom: 16px;
+}
+
+.hero-title em {
+  font-style: normal;
+  background: linear-gradient(135deg, var(--orange), var(--orange-light));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ── Search Bar ───────────────────────────────────────────────────────────── */
+.search-bar {
+  display: flex;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.12);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 14px;
+  padding: 12px 16px;
+  gap: 10px;
+  cursor: text;
+  transition: all 0.2s;
+}
+
+.search-bar:focus-within,
+.search-bar:hover {
+  background: rgba(255, 255, 255, 0.16);
+  border-color: rgba(255, 149, 0, 0.5);
+  box-shadow: 0 0 0 3px rgba(255, 149, 0, 0.1);
+}
+
+.search-bar input {
+  flex: 1;
+  background: none;
+  border: none;
+  outline: none;
+  color: white;
+  font-family: var(--font-body);
+  font-size: 14px;
+}
+
+.search-bar input::placeholder {
+  color: rgba(255, 255, 255, 0.5);
+}
+
+/* ── Sections ─────────────────────────────────────────────────────────────── */
+.section {
+  padding: 20px 20px 0;
+}
+
+.section-title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 14px;
+}
+
+.section-title h2 {
+  font-family: var(--font-display);
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--text);
+}
+
+.see-all {
+  font-size: 13px;
+  color: var(--orange);
+  font-weight: 500;
+  cursor: pointer;
+  background: none;
+  border: none;
+  padding: 0;
+  touch-action: manipulation;
+}
+
+/* ── Category Grid ────────────────────────────────────────────────────────── */
+.cat-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.cat-card {
+  border-radius: 16px;
+  padding: 16px;
+  cursor: pointer;
+  transition: transform 0.2s;
+  border: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  position: relative;
+  overflow: hidden;
+  touch-action: manipulation;
+}
+
+.cat-card:hover {
+  transform: translateY(-2px);
+}
+
+.cat-card:active {
+  transform: scale(0.97);
+}
+
+.cat-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.cat-label {
+  font-family: var(--font-display);
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1.3;
+}
+
+.cat-count {
+  font-size: 11px;
+  color: var(--text3);
+  font-weight: 400;
+  margin-top: 2px;
+}
+
+/* ── Horizontal Scroll ────────────────────────────────────────────────────── */
+.horiz-scroll {
+  display: flex;
+  gap: 12px;
+  overflow-x: auto;
+  padding-bottom: 8px;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+}
+
+.horiz-scroll::-webkit-scrollbar {
+  display: none;
+}
+
+/* ── Venue Cards ──────────────────────────────────────────────────────────── */
+.venue-card {
+  min-width: 220px;
+  border-radius: 18px;
+  overflow: hidden;
+  background: var(--navy3);
+  border: 1px solid var(--border);
+  cursor: pointer;
+  transition: transform 0.25s, box-shadow 0.25s;
+  scroll-snap-align: start;
+  flex-shrink: 0;
+  position: relative;
+  touch-action: manipulation;
+}
+
+.venue-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3);
+}
+
+.venue-card:active {
+  transform: scale(0.98);
+}
+
+.venue-card-img {
+  height: 140px;
+  width: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.venue-card-body {
+  padding: 12px;
+}
+
+.venue-card-name {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 14px;
+  line-height: 1.3;
+  color: var(--text);
+  margin-bottom: 4px;
+}
+
+.venue-card-meta {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  color: var(--text2);
+  margin-bottom: 8px;
+}
+
+.venue-card-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.rating-pill {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  background: rgba(255, 149, 0, 0.12);
+  color: var(--orange-light);
+  font-size: 12px;
+  font-weight: 600;
+  padding: 3px 8px;
+  border-radius: 100px;
+}
+
+.price-text {
+  font-size: 11px;
+  color: var(--text3);
+  font-weight: 500;
+}
+
+.featured-badge {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  background: linear-gradient(135deg, var(--orange), var(--orange-light));
+  color: white;
+  font-size: 10px;
+  font-weight: 700;
+  padding: 3px 8px;
+  border-radius: 100px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  display: flex;
+  align-items: center;
+  gap: 3px;
+}
+
+.fav-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 30px;
+  height: 30px;
+  background: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  cursor: pointer;
+  transition: transform 0.2s;
+  touch-action: manipulation;
+}
+
+.fav-btn:hover {
+  transform: scale(1.1);
+}
+
+.fav-btn.active {
+  background: rgba(255, 107, 107, 0.3);
+}
+
+/* ── Event Cards ──────────────────────────────────────────────────────────── */
+.event-card {
+  min-width: 260px;
+  background: var(--navy3);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: transform 0.25s;
+  flex-shrink: 0;
+  scroll-snap-align: start;
+  touch-action: manipulation;
+}
+
+.event-card:hover {
+  transform: translateY(-2px);
+}
+
+.event-img {
+  height: 130px;
+  width: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.event-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, transparent 40%, rgba(10, 14, 26, 0.9) 100%);
+}
+
+.event-cat-badge {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  font-size: 10px;
+  font-weight: 600;
+  padding: 3px 8px;
+  border-radius: 100px;
+  background: rgba(6, 214, 160, 0.25);
+  color: var(--emerald);
+  border: 1px solid rgba(6, 214, 160, 0.3);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.event-body {
+  padding: 12px;
+}
+
+.event-title {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 13px;
+  margin-bottom: 4px;
+}
+
+.event-venue {
+  font-size: 11px;
+  color: var(--text2);
+  margin-bottom: 6px;
+}
+
+.event-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.event-date {
+  font-size: 11px;
+  color: var(--orange-light);
+  font-weight: 600;
+}
+
+.event-price {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--emerald);
+}
+
+/* ── Filter Row ───────────────────────────────────────────────────────────── */
+.filter-row {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  padding: 12px 20px;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+}
+
+.filter-row::-webkit-scrollbar {
+  display: none;
+}
+
+.filter-chip {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 7px 14px;
+  border-radius: 100px;
+  font-size: 13px;
+  font-weight: 500;
+  border: 1px solid var(--border);
+  background: var(--glass);
+  color: var(--text2);
+  cursor: pointer;
+  white-space: nowrap;
+  flex-shrink: 0;
+  scroll-snap-align: start;
+  transition: all 0.2s;
+  font-family: var(--font-body);
+  touch-action: manipulation;
+}
+
+.filter-chip.active {
+  background: var(--orange);
+  border-color: var(--orange);
+  color: white;
+}
+
+/* ── Venue Grid (Discover) ────────────────────────────────────────────────── */
+.venue-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  padding: 0 20px;
+}
+
+.venue-grid-card {
+  border-radius: 16px;
+  overflow: hidden;
+  background: var(--navy3);
+  border: 1px solid var(--border);
+  cursor: pointer;
+  transition: transform 0.25s, box-shadow 0.25s;
+  position: relative;
+  touch-action: manipulation;
+}
+
+.venue-grid-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+.venue-grid-card:active {
+  transform: scale(0.98);
+}
+
+.venue-grid-img {
+  height: 110px;
+  width: 100%;
+  object-fit: cover;
+}
+
+.venue-grid-body {
+  padding: 10px;
+}
+
+.venue-grid-name {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 12px;
+  margin-bottom: 3px;
+  line-height: 1.3;
+}
+
+.venue-grid-lga {
+  font-size: 10px;
+  color: var(--text3);
+  margin-bottom: 5px;
+}
+
+.venue-grid-footer {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+/* ── Venue Detail ─────────────────────────────────────────────────────────── */
+.detail-header {
+  position: relative;
+  height: 260px;
+  overflow: hidden;
+}
+
+.detail-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.detail-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    rgba(10, 14, 26, 0.3) 0%,
+    transparent 40%,
+    rgba(10, 14, 26, 0.95) 100%
+  );
+}
+
+.detail-back {
+  position: absolute;
+  top: 16px;
+  left: 16px;
+  width: 36px;
+  height: 36px;
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  transition: all 0.2s;
+  touch-action: manipulation;
+}
+
+.detail-actions {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  display: flex;
+  gap: 8px;
+}
+
+.detail-action-btn {
+  width: 36px;
+  height: 36px;
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  transition: all 0.2s;
+  touch-action: manipulation;
+}
+
+.detail-info {
+  padding: 20px;
+}
+
+.detail-name {
+  font-family: var(--font-display);
+  font-size: 22px;
+  font-weight: 800;
+  line-height: 1.2;
+  margin-bottom: 8px;
+}
+
+.detail-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+
+.detail-meta-item {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 13px;
+  color: var(--text2);
+}
+
+.amenity-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background: var(--glass2);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 5px 10px;
+  font-size: 12px;
+  color: var(--text2);
+  margin: 3px;
+}
+
+/* ── Buttons ──────────────────────────────────────────────────────────────── */
+.cta-btn {
+  width: 100%;
+  padding: 14px;
+  border-radius: 14px;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 15px;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+  border: none;
+  touch-action: manipulation;
+}
+
+.cta-primary {
+  background: linear-gradient(135deg, var(--orange) 0%, var(--orange-light) 100%);
+  color: white;
+  box-shadow: 0 6px 24px rgba(255, 149, 0, 0.3);
+}
+
+.cta-primary:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 10px 30px rgba(255, 149, 0, 0.4);
+}
+
+.cta-primary:active {
+  transform: scale(0.98);
+}
+
+.cta-outline {
+  background: transparent;
+  border: 1px solid var(--border) !important;
+  color: var(--text);
+}
+
+/* ── Review Cards ─────────────────────────────────────────────────────────── */
+.review-card {
+  background: var(--glass);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 14px;
+  margin-bottom: 10px;
+}
+
+.review-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+
+.review-user {
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.review-text {
+  font-size: 13px;
+  color: var(--text2);
+  line-height: 1.5;
+}
+
+/* ── Auth Modal ───────────────────────────────────────────────────────────── */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  z-index: 100;
+  display: flex;
+  align-items: flex-end;
+  animation: fadeIn 0.2s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.modal-sheet {
+  width: 100%;
+  background: var(--navy2);
+  border-radius: 24px 24px 0 0;
+  /* Extra padding at bottom for home indicator */
+  padding: 24px 24px calc(32px + env(safe-area-inset-bottom, 0px));
+  border-top: 1px solid var(--border);
+  animation: slideUp 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  max-width: 430px;
+  margin: 0 auto;
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+.modal-handle {
+  width: 36px;
+  height: 4px;
+  background: var(--border);
+  border-radius: 2px;
+  margin: 0 auto 20px;
+}
+
+.modal-title {
+  font-family: var(--font-display);
+  font-size: 22px;
+  font-weight: 800;
+  margin-bottom: 8px;
+}
+
+.modal-sub {
+  font-size: 14px;
+  color: var(--text2);
+  margin-bottom: 24px;
+  line-height: 1.5;
+}
+
+.input-field {
+  width: 100%;
+  padding: 13px 16px;
+  border-radius: 12px;
+  background: var(--glass2);
+  border: 1px solid var(--border);
+  color: var(--text);
+  font-family: var(--font-body);
+  font-size: 15px;
+  outline: none;
+  margin-bottom: 12px;
+  transition: border-color 0.2s;
+  /* Prevent zoom on focus (iOS auto-zooms if font-size < 16px) */
+  font-size: 16px;
+}
+
+.input-field:focus {
+  border-color: var(--orange);
+}
+
+.input-field::placeholder {
+  color: var(--text3);
+}
+
+/* ── Toast ────────────────────────────────────────────────────────────────── */
+.toast {
+  position: fixed;
+  /* Push toast above nav bar + home indicator */
+  bottom: calc(90px + env(safe-area-inset-bottom, 0px));
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--navy3);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 12px 20px;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text);
+  z-index: 200;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+  animation: toastIn 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  white-space: nowrap;
+  /* Prevent the toast from going outside safe area horizontally */
+  max-width: calc(100vw - env(safe-area-inset-left) - env(safe-area-inset-right) - 40px);
+}
+
+@keyframes toastIn {
+  from {
+    opacity: 0;
+    transform: translateX(-50%) translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+}
+
+/* ── Profile ──────────────────────────────────────────────────────────────── */
+.profile-hero {
+  background: linear-gradient(135deg, var(--navy2) 0%, var(--navy3) 100%);
+  padding: 30px 20px;
+  text-align: center;
+  border-bottom: 1px solid var(--border);
+}
+
+.avatar {
+  width: 72px;
+  height: 72px;
+  background: linear-gradient(135deg, var(--orange), var(--orange-light));
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 12px;
+  font-family: var(--font-display);
+  font-size: 28px;
+  font-weight: 800;
+  color: white;
+  box-shadow: 0 6px 24px rgba(255, 149, 0, 0.3);
+}
+
+.profile-name {
+  font-family: var(--font-display);
+  font-size: 20px;
+  font-weight: 800;
+  margin-bottom: 4px;
+}
+
+.profile-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background: rgba(6, 214, 160, 0.15);
+  color: var(--emerald);
+  font-size: 11px;
+  font-weight: 600;
+  padding: 3px 10px;
+  border-radius: 100px;
+  border: 1px solid rgba(6, 214, 160, 0.2);
+}
+
+.menu-item {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 16px 20px;
+  cursor: pointer;
+  transition: background 0.15s;
+  border-bottom: 1px solid var(--border);
+  touch-action: manipulation;
+}
+
+.menu-item:hover {
+  background: var(--glass);
+}
+
+.menu-icon {
+  width: 38px;
+  height: 38px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.menu-label {
+  flex: 1;
+  font-size: 15px;
+  font-weight: 500;
+}
+
+/* ── Skeleton Loader ──────────────────────────────────────────────────────── */
+.skeleton {
+  background: linear-gradient(90deg, var(--glass) 25%, var(--glass2) 50%, var(--glass) 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+  border-radius: 8px;
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+/* ── Misc ─────────────────────────────────────────────────────────────────── */
+.premium-glow {
+  box-shadow: 0 0 0 2px rgba(255, 149, 0, 0.3), 0 4px 20px rgba(255, 149, 0, 0.15);
+}
+
+.stat-card {
+  background: var(--glass);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 16px;
+  text-align: center;
+}
+
+.stat-value {
+  font-family: var(--font-display);
+  font-size: 24px;
+  font-weight: 800;
+  color: var(--orange);
+}
+
+.stat-label {
+  font-size: 12px;
+  color: var(--text3);
+  margin-top: 2px;
+}
+
+.divider {
+  height: 1px;
+  background: var(--border);
+  margin: 16px 0;
+}
+
+.dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+/* ── Map ──────────────────────────────────────────────────────────────────── */
+.map-pin {
+  cursor: pointer;
+  transition: transform 0.2s;
+  filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.5));
+}
+
+.map-pin:hover {
+  transform: scale(1.2);
+  transform-origin: center;
+}
+
+.map-popup {
+  position: absolute;
+  background: var(--navy3);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 12px;
+  width: 200px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+  animation: popupIn 0.2s ease;
+  z-index: 10;
+}
+
+@keyframes popupIn {
+  from {
+    opacity: 0;
+    transform: translateY(5px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.map-popup-name {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 13px;
+  margin-bottom: 4px;
+}
+
+.map-popup-meta {
+  font-size: 11px;
+  color: var(--text2);
+  margin-bottom: 8px;
+}
+
+/* ── Capacitor / WebView only adjustments ─────────────────────────────────── */
+/* Detected via Capacitor.isNativePlatform() injecting a class on <body> */
+.capacitor-android .header {
+  /* On Android, status bar is handled by the StatusBar plugin,
+     so we don't need extra top padding (already applied via padding-top on .app) */
+}
+
+.capacitor-ios .header {
+  /* On iOS with Dynamic Island, extra 8px helps on iPhone 14 Pro+ */
+  padding-top: max(16px, env(safe-area-inset-top, 16px));
+}
+
+/* Disable text selection everywhere in native app for polish */
+.capacitor-android *,
+.capacitor-ios * {
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+/* Re-enable selection in inputs and textareas */
+.capacitor-android input,
+.capacitor-android textarea,
+.capacitor-ios input,
+.capacitor-ios textarea {
+  -webkit-user-select: text;
+  user-select: text;
+}
